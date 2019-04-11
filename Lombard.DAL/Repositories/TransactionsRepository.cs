@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Lombard.DAL.Repositories
 {
@@ -16,9 +17,11 @@ namespace Lombard.DAL.Repositories
             _context = context;
         }
 
-        public void Add(Transaction transaction)
+        public Task Add(Transaction transaction)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            _context.Add(transaction);
+            _context.SaveChangesAsync();
         }
 
         public void Delete(int id)

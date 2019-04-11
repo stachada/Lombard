@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Lombard.BL.RepositoriesInterfaces
 {
@@ -9,7 +10,7 @@ namespace Lombard.BL.RepositoriesInterfaces
     {
         IEnumerable<Transaction> GetAll();
         Transaction GetById(int id);
-        void Add(Transaction transaction);
+        Task Add(Transaction transaction);
         void Update(Transaction transaction);
         void Delete(int id);
     }
