@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Lombard.BL.Models;
 using NUnit.Framework;
+using Moq;
 
 namespace Lombard.Tests
 {
@@ -44,9 +45,9 @@ namespace Lombard.Tests
         }
 
         [Test]
-        [TestCase(2012, 12, 30)]
-        [TestCase(2008, 4, 10)]
-        [TestCase(2018, 5, 6)]
+        [TestCase(2002, 4, 2)]
+        [TestCase(2010, 1, 10)]
+        [TestCase(2015, 11, 15)]
         public void Is_Not_Adult_Test(int year, int month, int day)
         {
             //Prepare
@@ -54,6 +55,13 @@ namespace Lombard.Tests
             {
                 BirthDate = new DateTime(year, month, day)
             };
+
+            /*
+            var customerMock = new Mock<Customer>();
+            customerMock.Setup(c => c.BirthDate)
+                .Returns(new DateTime(currentYear, currentMonth, currentDay));           
+            Customer customer = customerMock.Object;
+            */
 
             //Act
 
