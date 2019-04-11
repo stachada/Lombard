@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.572
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lombard.Tests", "Lombard.Tests\Lombard.Tests.csproj", "{C56A4ECB-D3E1-4805-B401-494E1D5246F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lombard.Tests", "Lombard.Tests\Lombard.Tests.csproj", "{C56A4ECB-D3E1-4805-B401-494E1D5246F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lombard.BL", "Lombard.BL\Lombard.BL.csproj", "{2C7D37B2-7BD4-4846-B2ED-381732EE08A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lombard.BL", "Lombard.BL\Lombard.BL.csproj", "{2C7D37B2-7BD4-4846-B2ED-381732EE08A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lombard.DAL", "Lombard.DAL\Lombard.DAL.csproj", "{C29CEAB9-2128-4C0C-9264-66CE054DA1EB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{2C7D37B2-7BD4-4846-B2ED-381732EE08A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C7D37B2-7BD4-4846-B2ED-381732EE08A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C7D37B2-7BD4-4846-B2ED-381732EE08A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C29CEAB9-2128-4C0C-9264-66CE054DA1EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C29CEAB9-2128-4C0C-9264-66CE054DA1EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C29CEAB9-2128-4C0C-9264-66CE054DA1EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C29CEAB9-2128-4C0C-9264-66CE054DA1EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -32,12 +32,13 @@ namespace Lombard.BL.Models
         {
 
         }
-
+        public int TransactionId { get; set; }
         public DateTime TransactionDate { get; private set; }
         public int Quantity { get; private set; }
         public decimal Price { get; private set; }
         public Item Item { get; private set; }
         public Customer Customer { get; private set; }
+
 
         public decimal GetTransactionAmount()
         {
