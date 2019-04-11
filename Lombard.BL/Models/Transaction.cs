@@ -8,6 +8,18 @@ namespace Lombard.BL.Models
     {
         public static Transaction CreateTransaction(Item item, Customer customer, int quantity)
         {
+            if (quantity <= 0)
+                throw new InvalidOperationException("quantity");
+
+            if (customer == null)
+                throw new InvalidOperationException("customer");
+
+            if (item == null)
+                throw new InvalidOperationException("item");
+
+            if (quantity > item.Quantity)
+                throw new InvalidOperationException("quantity cannot be less than item's quantity");
+
             Transaction transaction = new Transaction();
             transaction.Item = item;
             transaction.Customer = customer;
@@ -29,7 +41,7 @@ namespace Lombard.BL.Models
 
         public decimal GetTransactionAmount()
         {
-            throw new NotImplementedException();
+            return Item.Price * Quantity;
         }
 
     }
