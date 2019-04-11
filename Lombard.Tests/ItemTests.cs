@@ -2,9 +2,9 @@ using NUnit.Framework;
 using Lombard.BL.Models;
 
 
-namespace Tests
+namespace Lombard.Tests
 {
-    public class Tests
+    public class ItemTests
     {
         [TestCase(1,12,13)]
         [TestCase(100, 24, 124)]
