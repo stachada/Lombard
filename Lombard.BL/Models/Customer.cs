@@ -12,12 +12,12 @@ namespace Lombard.BL.Models
 
         public void ChangeName(string newName)
         {
-            throw new NotImplementedException();
+            Name = newName;          
         }
-
+        
         public bool IsAdult()
         {
-            throw new NotImplementedException();
-        }
+            return BirthDate.AddYears(18) < DateTime.Now ? true : false;
+        }     
     }
 }
