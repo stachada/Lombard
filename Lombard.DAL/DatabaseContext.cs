@@ -6,7 +6,7 @@ using Lombard.BL.Models;
 
 namespace Lombard.DAL
 {
-    class DatabaseContext: DbContext
+    public class DatabaseContext: DbContext
     {
         public DbSet<Item> Items { get; set; }
         public DbSet<Customer> Customers { get; set; }
