@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Lombard.BL.Models
 {
     public class Transaction
     {
-        public static Transaction CreateTransaction(Item item, Customer customer, int quantity)
+        public static Transaction CreateTransaction(Item item, Customer customer, int quantity, int id = 0)
         {
             if (quantity <= 0)
                 throw new InvalidOperationException("quantity");
@@ -21,6 +19,7 @@ namespace Lombard.BL.Models
                 throw new InvalidOperationException("quantity cannot be less than item's quantity");
 
             Transaction transaction = new Transaction();
+            transaction.TransactionId = id;
             transaction.Item = item;
             transaction.Customer = customer;
             transaction.Quantity = quantity;
@@ -32,6 +31,7 @@ namespace Lombard.BL.Models
         {
 
         }
+
         public int TransactionId { get; set; }
         public DateTime TransactionDate { get; private set; }
         public int Quantity { get; private set; }

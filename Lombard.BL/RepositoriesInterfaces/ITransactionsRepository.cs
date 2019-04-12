@@ -8,10 +8,10 @@ namespace Lombard.BL.RepositoriesInterfaces
 {
     public interface ITransactionsRepository
     {
-        IEnumerable<Transaction> GetAll();
-        Transaction GetById(int id);
-        Task Add(Transaction transaction);
-        void Update(Transaction transaction);
-        void Delete(int id);
+        Task<IEnumerable<Transaction>> GetAllAsync();
+        Task<Transaction> GetByIdAsync(int id);
+        Task AddAsync(Transaction transaction);
+        Task UpdateAsync(Transaction transaction);
+        Task DeleteAsync(int id);
     }
 }

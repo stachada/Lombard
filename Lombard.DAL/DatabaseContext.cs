@@ -7,7 +7,7 @@ namespace Lombard.DAL
     {
         public DbSet<Item> Items { get; set; }
         public DbSet<Customer> Customers { get; set; }
-        public DbSet<Transaction> Transactions { get; set; }
+        public virtual DbSet<Transaction> Transactions { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

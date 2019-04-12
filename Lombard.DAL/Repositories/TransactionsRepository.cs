@@ -3,7 +3,7 @@ using Lombard.BL.RepositoriesInterfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Lombard.DAL.Repositories
@@ -17,31 +17,50 @@ namespace Lombard.DAL.Repositories
             _context = context;
         }
 
-        public Task Add(Transaction transaction)
+        public async Task<IEnumerable<Transaction>> GetAllAsync()
         {
-            //throw new NotImplementedException();
-            _context.Add(transaction);
-            _context.SaveChangesAsync();
+            return await _context.Transactions.ToListAsync();
         }
 
-        public void Delete(int id)
+        public async Task<Transaction> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Transactions.FirstOrDefaultAsync(t => t.TransactionId == id);
         }
 
-        public IEnumerable<Transaction> GetAll()
+        public async Task AddAsync(Transaction transaction)
         {
-            throw new NotImplementedException();
+            _context.Transactions.Add(transaction);
+            await _context.SaveChangesAsync();
         }
 
-        public Transaction GetById(int id)
+        public async Task UpdateAsync(Transaction transaction)
         {
-            throw new NotImplementedException();
+            var transactionFromDb = await GetByIdAsync(transaction.TransactionId);
+
+            if (transactionFromDb != null)
+            {
+                _context.Transactions.Update(transaction);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new InvalidOperationException("Transaction not found");
+            }
         }
 
-        public void Update(Transaction transaction)
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var transaction = await GetByIdAsync(id);
+
+            if (transaction != null)
+            {
+                _context.Transactions.Remove(transaction);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new InvalidOperationException("Transaction not found");
+            }
         }
     }
 }
