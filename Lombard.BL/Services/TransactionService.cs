@@ -19,12 +19,6 @@ namespace Lombard.BL.Services
 
         public async Task BuyAsync(int itemId, int customerId, int quantity, decimal price)
         {
-            // Get customer from database
-            // Validate transaction
-            // Update quantity on item
-            // Create Transaction
-            // Update Item
-            // Add Transaction
             var item = _itemsRepo.GetItemById(itemId);
 
             if (item == null) throw new InvalidOperationException("Item not found");
@@ -33,30 +27,27 @@ namespace Lombard.BL.Services
 
             if (price <= 0) throw new InvalidOperationException("Price must be positive");
 
-            try
-            {
-                item.IncreaseItemQuantityByGivenValue(quantity);
-                _itemsRepo.UpdateItem(item);
-                var transaction = Transaction.CreateTransaction(item, new Customer(), quantity, price);
-                await _transactionsRepo.AddAsync(transaction);
-            }
-            catch
-            {
-
-            }
+            item.IncreaseItemQuantityByGivenValue(quantity);
+            _itemsRepo.UpdateItem(item);
+            var transaction = Transaction.CreateTransaction(item, new Customer(), quantity, price);
+            await _transactionsRepo.AddAsync(transaction);
 
         }
 
         public async Task SellAsync(int itemId, int customerId, int quantity, decimal price)
         {
-            // Get item from database
-            // Get customer from database
-            // Validate transaction
-            // Update quantity on item
-            // Create Transaction
-            // Update Item
-            // Add Transaction
-            throw new NotImplementedException();
+            var item = _itemsRepo.GetItemById(itemId);
+
+            if (item == null) throw new InvalidOperationException("Item not found");
+
+            if (quantity <= 0) throw new InvalidOperationException("Quantity must be positive");
+
+            if (price <= 0) throw new InvalidOperationException("Price must be positive");
+
+            item.DecreaseItemQuantityByGivenValue(quantity);
+            _itemsRepo.UpdateItem(item);
+            var transaction = Transaction.CreateTransaction(item, new Customer(), -quantity, price);
+            await _transactionsRepo.AddAsync(transaction);
         }
     }
 }

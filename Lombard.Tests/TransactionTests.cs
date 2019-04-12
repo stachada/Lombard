@@ -48,27 +48,6 @@ namespace Lombard.Tests
         }
 
         [Test]
-        public void CreateTransaction_QuantityLessThanItemQuantity_ShouldThrowException()
-        {
-            var customer = new Customer()
-            {
-                CustomerId = 1,
-                Name = "Customer1",
-                BirthDate = new System.DateTime(1990, 12, 12)
-            };
-
-            var item = new Item()
-            {
-                ItemId = 1,
-                Price = 10.00M,
-                Name = "",
-                Quantity = 10,
-            };
-
-            Assert.Throws<InvalidOperationException>(() => Transaction.CreateTransaction(item, customer, 11, 10.00M));
-        }
-
-        [Test]
         public void GetTransactionAmount_GivenPriceAndQuantity_ShouldReturnProperValue()
         {
             var customer = new Customer()

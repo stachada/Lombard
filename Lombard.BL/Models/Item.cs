@@ -10,7 +10,7 @@ namespace Lombard.BL.Models
         public int Quantity { get; set; }
 
 
-        public void IncreaseItemQuantityByGivenValue(int quantity)
+        public virtual void IncreaseItemQuantityByGivenValue(int quantity)
         {
             Quantity += quantity;
         }

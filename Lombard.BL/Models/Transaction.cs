@@ -15,9 +15,6 @@ namespace Lombard.BL.Models
             if (item == null)
                 throw new InvalidOperationException("item");
 
-            if (quantity > item.Quantity)
-                throw new InvalidOperationException("quantity cannot be less than item's quantity");
-
             Transaction transaction = new Transaction();
             transaction.TransactionId = id;
             transaction.Item = item;
@@ -50,6 +47,5 @@ namespace Lombard.BL.Models
         {
             TransactionDate = date;
         }
-
     }
 }
