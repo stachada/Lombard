@@ -20,7 +20,7 @@ namespace Lombard.Tests
             mockItemsRepository.Setup(m => m.GetItemById(It.IsAny<int>())).Returns(new Item());
             var mockTransactionsRepository = new Mock<ITransactionsRepository>();
 
-            var service = new TransactionService(mockTransactionsRepository.Object, mockItemsRepository.Object);
+            var service = new TransactionsService(mockTransactionsRepository.Object, mockItemsRepository.Object);
 
             await service.BuyAsync(1, 1, 10, 10.00M);
 
@@ -34,7 +34,7 @@ namespace Lombard.Tests
             mockItemsRepository.Setup(m => m.GetItemById(It.IsAny<int>())).Returns((Item)null);
             var mockTransactionsRepository = new Mock<ITransactionsRepository>();
 
-            var service = new TransactionService(mockTransactionsRepository.Object, mockItemsRepository.Object);
+            var service = new TransactionsService(mockTransactionsRepository.Object, mockItemsRepository.Object);
 
             Assert.ThrowsAsync<InvalidOperationException>(() => service.BuyAsync(1, 1, 10, 10.00M));
         }
@@ -45,7 +45,7 @@ namespace Lombard.Tests
             var mockItemsRepository = new Mock<IItemsRepository>();
             mockItemsRepository.Setup(m => m.GetItemById(It.IsAny<int>())).Returns(new Item());
             var mockTransactionsRepository = new Mock<ITransactionsRepository>();
-            var service = new TransactionService(mockTransactionsRepository.Object, mockItemsRepository.Object);
+            var service = new TransactionsService(mockTransactionsRepository.Object, mockItemsRepository.Object);
 
             Assert.ThrowsAsync<InvalidOperationException>(() => service.BuyAsync(1, 1, -1, 10.00M));
         }
@@ -56,7 +56,7 @@ namespace Lombard.Tests
             var mockItemsRepository = new Mock<IItemsRepository>();
             mockItemsRepository.Setup(m => m.GetItemById(It.IsAny<int>())).Returns(new Item());
             var mockTransactionsRepository = new Mock<ITransactionsRepository>();
-            var service = new TransactionService(mockTransactionsRepository.Object, mockItemsRepository.Object);
+            var service = new TransactionsService(mockTransactionsRepository.Object, mockItemsRepository.Object);
 
             Assert.ThrowsAsync<InvalidOperationException>(() => service.BuyAsync(1, 1, 1, -10.00M));
         }
@@ -69,7 +69,7 @@ namespace Lombard.Tests
             var mockItemsRepository = new Mock<IItemsRepository>();
             mockItemsRepository.Setup(m => m.GetItemById(It.IsAny<int>())).Returns(mockItem.Object);
             var mockTransactionsRepository = new Mock<ITransactionsRepository>();
-            var service = new TransactionService(mockTransactionsRepository.Object, mockItemsRepository.Object);
+            var service = new TransactionsService(mockTransactionsRepository.Object, mockItemsRepository.Object);
 
             await service.BuyAsync(1, 1, 1, 10.00M);
 
@@ -84,7 +84,7 @@ namespace Lombard.Tests
             var mockItemsRepository = new Mock<IItemsRepository>();
             mockItemsRepository.Setup(m => m.GetItemById(It.IsAny<int>())).Returns(mockItem.Object);
             var mockTransactionsRepository = new Mock<ITransactionsRepository>();
-            var service = new TransactionService(mockTransactionsRepository.Object, mockItemsRepository.Object);
+            var service = new TransactionsService(mockTransactionsRepository.Object, mockItemsRepository.Object);
 
             await service.BuyAsync(1, 1, 1, 10.00M);
 
@@ -99,7 +99,7 @@ namespace Lombard.Tests
             var mockItemsRepository = new Mock<IItemsRepository>();
             mockItemsRepository.Setup(m => m.GetItemById(It.IsAny<int>())).Returns(mockItem.Object);
             var mockTransactionsRepository = new Mock<ITransactionsRepository>();
-            var service = new TransactionService(mockTransactionsRepository.Object, mockItemsRepository.Object);
+            var service = new TransactionsService(mockTransactionsRepository.Object, mockItemsRepository.Object);
 
             await service.BuyAsync(1, 1, 1, 10.00M);
 
