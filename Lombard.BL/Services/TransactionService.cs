@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Lombard.BL.Models;
 using Lombard.BL.RepositoriesInterfaces;
 
 namespace Lombard.BL.Services
@@ -18,14 +19,32 @@ namespace Lombard.BL.Services
 
         public async Task BuyAsync(int itemId, int customerId, int quantity, decimal price)
         {
-            // Get item from database
             // Get customer from database
             // Validate transaction
             // Update quantity on item
             // Create Transaction
-            // Save Item
-            // Save Transaction
-            throw new NotImplementedException();
+            // Update Item
+            // Add Transaction
+            var item = _itemsRepo.GetItemById(itemId);
+
+            if (item == null) throw new InvalidOperationException("Item not found");
+
+            if (quantity <= 0) throw new InvalidOperationException("Quantity must be positive");
+
+            if (price <= 0) throw new InvalidOperationException("Price must be positive");
+
+            try
+            {
+                item.IncreaseItemQuantityByGivenValue(quantity);
+                _itemsRepo.UpdateItem(item);
+                var transaction = Transaction.CreateTransaction(item, new Customer(), quantity, price);
+                await _transactionsRepo.AddAsync(transaction);
+            }
+            catch
+            {
+
+            }
+
         }
 
         public async Task SellAsync(int itemId, int customerId, int quantity, decimal price)
@@ -35,8 +54,8 @@ namespace Lombard.BL.Services
             // Validate transaction
             // Update quantity on item
             // Create Transaction
-            // Save Item
-            // Save Transaction
+            // Update Item
+            // Add Transaction
             throw new NotImplementedException();
         }
     }

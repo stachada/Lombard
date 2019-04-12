@@ -29,6 +29,7 @@ namespace Lombard.DAL.Repositories
 
         public async Task AddAsync(Transaction transaction)
         {
+            transaction.SetTransactionDate(DateTime.Now);
             _context.Transactions.Add(transaction);
             await _context.SaveChangesAsync();
         }
@@ -39,6 +40,7 @@ namespace Lombard.DAL.Repositories
 
             if (transactionFromDb != null)
             {
+                transaction.SetTransactionDate(DateTime.Now);
                 _context.Transactions.Update(transaction);
                 await _context.SaveChangesAsync();
             }

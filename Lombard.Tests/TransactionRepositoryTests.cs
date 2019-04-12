@@ -22,13 +22,13 @@ namespace Lombard.Tests
         [SetUp]
         public void Setup()
         {
-            _transactions = GenerateTransactions();
+            _transactions = TransactionTestHelpers.GenerateTransactions();
         }
 
         [Test]
         public async Task GetAllAsync_ReturnsAllTransactions()
         {
-            Mock<DbSet<Transaction>> dbSetMock = CreateDbSetMockForTransaction();
+            Mock<DbSet<Transaction>> dbSetMock = TransactionTestHelpers.CreateDbSetMockForTransaction(_transactions);
 
             var contextMock = new Mock<DatabaseContext>();
             contextMock.Setup(m => m.Transactions).Returns(dbSetMock.Object);
@@ -43,7 +43,7 @@ namespace Lombard.Tests
         [Test]
         public async Task GetById_GivenId_ReturnsTheCorrectTransaction()
         {
-            Mock<DbSet<Transaction>> dbSetMock = CreateDbSetMockForTransaction();
+            Mock<DbSet<Transaction>> dbSetMock = TransactionTestHelpers.CreateDbSetMockForTransaction(_transactions);
 
             var contextMock = new Mock<DatabaseContext>();
             contextMock.Setup(m => m.Transactions).Returns(dbSetMock.Object);
@@ -64,7 +64,7 @@ namespace Lombard.Tests
         [Test]
         public async Task GetById_NonexistingId_ReturnsNull()
         {
-            Mock<DbSet<Transaction>> dbSetMock = CreateDbSetMockForTransaction();
+            Mock<DbSet<Transaction>> dbSetMock = TransactionTestHelpers.CreateDbSetMockForTransaction(_transactions);
 
             var contextMock = new Mock<DatabaseContext>();
             contextMock.Setup(m => m.Transactions).Returns(dbSetMock.Object);
@@ -86,7 +86,7 @@ namespace Lombard.Tests
 
             var repository = new TransactionsRepository(contextMock.Object);
 
-            var transaction = Transaction.CreateTransaction(new Item { Quantity = 1 }, new Customer(), 1);
+            var transaction = Transaction.CreateTransaction(new Item { Quantity = 1 }, new Customer(), 1, 10.00M);
 
             await repository.AddAsync(transaction);
 
@@ -97,14 +97,14 @@ namespace Lombard.Tests
         [Test]
         public async Task UpdateAsync_GivenTransaction_ShouldCallUpdateOnDbSetAndSaveChangesAsyncOnDbContext()
         {
-            Mock<DbSet<Transaction>> dbSetMock = CreateDbSetMockForTransaction();
+            Mock<DbSet<Transaction>> dbSetMock = TransactionTestHelpers.CreateDbSetMockForTransaction(_transactions);
 
             var contextMock = new Mock<DatabaseContext>();
             contextMock.Setup(m => m.Transactions).Returns(dbSetMock.Object);
 
             var repository = new TransactionsRepository(contextMock.Object);
 
-            var transaction = Transaction.CreateTransaction(new Item { Quantity = 1 }, new Customer(), 1, 1);
+            var transaction = Transaction.CreateTransaction(new Item { Quantity = 1 }, new Customer(), 1, 10.00M, 1);
 
             await repository.UpdateAsync(transaction);
 
@@ -115,14 +115,14 @@ namespace Lombard.Tests
         [Test]
         public void UpdateAsync_NonExistingTransaction_ShouldThrowException()
         {
-            Mock<DbSet<Transaction>> dbSetMock = CreateDbSetMockForTransaction();
+            Mock<DbSet<Transaction>> dbSetMock = TransactionTestHelpers.CreateDbSetMockForTransaction(_transactions);
 
             var contextMock = new Mock<DatabaseContext>();
             contextMock.Setup(m => m.Transactions).Returns(dbSetMock.Object);
 
             var repository = new TransactionsRepository(contextMock.Object);
 
-            var transaction = Transaction.CreateTransaction(new Item { Quantity = 1 }, new Customer(), 1, 5);
+            var transaction = Transaction.CreateTransaction(new Item { Quantity = 1 }, new Customer(), 1, 10.00M, 5);
 
             Assert.ThrowsAsync<InvalidOperationException>(() => repository.UpdateAsync(transaction));
         }
@@ -130,7 +130,7 @@ namespace Lombard.Tests
         [Test]
         public async Task DeleteAsync_GivenTransactionId_ShouldCallRemoveOnDbSetAndSaveChangesAsyncOnDbContext()
         {
-            Mock<DbSet<Transaction>> dbSetMock = CreateDbSetMockForTransaction();
+            Mock<DbSet<Transaction>> dbSetMock = TransactionTestHelpers.CreateDbSetMockForTransaction(_transactions);
 
             var contextMock = new Mock<DatabaseContext>();
             contextMock.Setup(m => m.Transactions).Returns(dbSetMock.Object);
@@ -146,7 +146,7 @@ namespace Lombard.Tests
         [Test]
         public void DeleteAsync_NonExistingTransactionId_ShouldThrowException()
         {
-            Mock<DbSet<Transaction>> dbSetMock = CreateDbSetMockForTransaction();
+            Mock<DbSet<Transaction>> dbSetMock = TransactionTestHelpers.CreateDbSetMockForTransaction(_transactions);
 
             var contextMock = new Mock<DatabaseContext>();
             contextMock.Setup(m => m.Transactions).Returns(dbSetMock.Object);
@@ -156,79 +156,6 @@ namespace Lombard.Tests
             Assert.ThrowsAsync<InvalidOperationException>(() => repository.DeleteAsync(5));
         }
 
-        private Mock<DbSet<Transaction>> CreateDbSetMockForTransaction()
-        {
-            var dbSetMock = new Mock<DbSet<Transaction>>();
-            dbSetMock.As<IAsyncEnumerable<Transaction>>()
-                .Setup(m => m.GetEnumerator())
-                .Returns(new TestAsyncEnumerator<Transaction>(_transactions.AsQueryable().GetEnumerator()));
-
-            dbSetMock.As<IQueryable<Transaction>>()
-                .Setup(m => m.Provider)
-                .Returns(new TestAsyncQueryProvider<Transaction>(_transactions.AsQueryable().Provider));
-
-            dbSetMock.As<IQueryable<Transaction>>()
-                .Setup(m => m.Expression)
-                .Returns(_transactions.AsQueryable().Expression);
-
-            dbSetMock.As<IQueryable<Transaction>>()
-                .Setup(m => m.ElementType)
-                .Returns(_transactions.AsQueryable().ElementType);
-
-            dbSetMock.As<IQueryable<Transaction>>()
-                .Setup(m => m.GetEnumerator())
-                .Returns(_transactions.AsQueryable().GetEnumerator());
-            return dbSetMock;
-        }
-
-        private IEnumerable<Transaction> GenerateTransactions()
-        {
-            var customer1 = new Customer()
-            {
-                CustomerId = 1,
-                Name = "Customer1",
-                BirthDate = new DateTime(1990, 12, 12)
-            };
-
-            var customer2 = new Customer()
-            {
-                CustomerId = 2,
-                Name = "Customer2",
-                BirthDate = new DateTime(1991, 05, 14)
-            };
-
-            var item1 = new Item()
-            {
-                ItemId = 1,
-                Price = 10.00M,
-                Name = "Opona",
-                Quantity = 5
-            };
-
-            var item2 = new Item()
-            {
-                ItemId = 2,
-                Price = 15.55M,
-                Name = "Udko z psa",
-                Quantity = 10
-            };
-
-            var item3 = new Item()
-            {
-                ItemId = 3,
-                Price = 5.35M,
-                Name = "Paczka ryżu",
-                Quantity = 7
-            };
-
-            var transactions = new List<Transaction>()
-            {
-                Transaction.CreateTransaction(item1, customer1, 1, 1),
-                Transaction.CreateTransaction(item2, customer1, 2, 2),
-                Transaction.CreateTransaction(item3, customer2, 4, 3)
-            };
-
-            return transactions;
-        }
+        
     }
 }

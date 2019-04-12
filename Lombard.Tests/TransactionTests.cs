@@ -17,7 +17,7 @@ namespace Lombard.Tests
                 Name = "",
                 Quantity = 10,
             };
-            var transaction = Transaction.CreateTransaction(item, new Customer(), 1);
+            var transaction = Transaction.CreateTransaction(item, new Customer(), 1, 10.00M);
 
 
             Assert.Multiple(() =>
@@ -32,19 +32,19 @@ namespace Lombard.Tests
         [TestCase(-1)]
         public void CreateTransaction_NegativeQuantity_ShouldThrowException(int quantity)
         {
-            Assert.Throws<InvalidOperationException>(() => Transaction.CreateTransaction(new Item(), new Customer(), quantity));
+            Assert.Throws<InvalidOperationException>(() => Transaction.CreateTransaction(new Item(), new Customer(), quantity, 10.00M));
         }
 
         [Test]
         public void CreateTransaction_NullCustomer_ShouldThrowException()
         {
-            Assert.Throws<InvalidOperationException>(() => Transaction.CreateTransaction(new Item(), null, 1));
+            Assert.Throws<InvalidOperationException>(() => Transaction.CreateTransaction(new Item(), null, 1, 10.00M));
         }
 
         [Test]
         public void CreateTransaction_NullItem_ShouldThrowException()
         {
-            Assert.Throws<InvalidOperationException>(() => Transaction.CreateTransaction(null, new Customer(), 1));
+            Assert.Throws<InvalidOperationException>(() => Transaction.CreateTransaction(null, new Customer(), 1, 10.00M));
         }
 
         [Test]
@@ -65,7 +65,7 @@ namespace Lombard.Tests
                 Quantity = 10,
             };
 
-            Assert.Throws<InvalidOperationException>(() => Transaction.CreateTransaction(item, customer, 11));
+            Assert.Throws<InvalidOperationException>(() => Transaction.CreateTransaction(item, customer, 11, 10.00M));
         }
 
         [Test]
@@ -86,7 +86,7 @@ namespace Lombard.Tests
                 Quantity = 10,
             };
 
-            var transaction = Transaction.CreateTransaction(item, customer, 1);
+            var transaction = Transaction.CreateTransaction(item, customer, 1, 10.00M);
 
             var result = transaction.GetTransactionAmount();
 
@@ -111,7 +111,7 @@ namespace Lombard.Tests
                 Quantity = 10,
             };
 
-            var transaction = Transaction.CreateTransaction(item, customer, 1);
+            var transaction = Transaction.CreateTransaction(item, customer, 1, 10.00M);
 
             var result = transaction.GetTransactionAmount();
 
