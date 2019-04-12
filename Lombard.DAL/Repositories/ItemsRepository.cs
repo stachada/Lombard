@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Lombard.BL.Models;
 using Lombard.BL.RepositoriesInterfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Lombard.DAL.Repositories
 {
@@ -14,29 +17,50 @@ namespace Lombard.DAL.Repositories
             _context = context;
         }
 
-        public void AddItem(Item item)
+        public async Task AddItem(Item item)
         {
-            throw new NotImplementedException();
+            _context.Items.Add(item);
+            await _context.SaveChangesAsync();
         }
 
-        public void DeleteItem(int itemId)
+        public async Task DeleteItem(int itemId)
         {
-            throw new NotImplementedException();
+            var itemToDelete =  await GetItemById(itemId);
+
+            if(itemToDelete != null)
+            {
+                _context.Items.Remove(itemToDelete);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new InvalidOperationException("Item does not exist");
+            }
+        }
+
+        public async Task UpdateItem(Item item)
+        {
+            var itemFromDatabase = await GetItemById(item.ItemId);
+
+            if (itemFromDatabase != null)
+            {
+                _context.Items.Update(item);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new InvalidOperationException("Item does not exist");
+            }
         }
 
         public IEnumerable<Item> GetAll()
         {
-            throw new NotImplementedException();
+            return _context.Items.ToList();
         }
 
-        public Item GetItemById(int itemId)
+        public async Task<Item> GetItemById(int itemId)
         {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateItem(Item item)
-        {
-            throw new NotImplementedException();
+            return await _context.Items.FirstOrDefaultAsync(i => i.ItemId == itemId);
         }
     }
 }

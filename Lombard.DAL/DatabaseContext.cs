@@ -5,7 +5,7 @@ namespace Lombard.DAL
 {
     public class DatabaseContext: DbContext
     {
-        public DbSet<Item> Items { get; set; }
+        public virtual DbSet<Item> Items { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public virtual DbSet<Transaction> Transactions { get; set; }
 
