@@ -1,12 +1,43 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Lombard.BL.Services;
+using LombardAPI.Dtos;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LombardAPI.Controllers
 {
-    public class TransactionsController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class TransactionsController : ControllerBase
     {
-        public IActionResult Index()
+        private readonly ITransactionsService _transactionsService;
+
+        public TransactionsController(ITransactionsService transactionsService)
         {
-            return View();
+            _transactionsService = transactionsService;
+        }
+
+        [HttpPost("buy")]
+        public async Task Buy([FromBody]TransactionDto transactionDto)
+        {
+            await _transactionsService.BuyAsync(
+                transactionDto.ItemId,
+                transactionDto.CustomerId,
+                transactionDto.Quantity,
+                transactionDto.Price);
+        }
+
+        [HttpPost("sell")]
+        public async Task Sell([FromBody]TransactionDto transactionDto)
+        {
+            await _transactionsService.SellAsync(
+                transactionDto.ItemId,
+                transactionDto.CustomerId,
+                transactionDto.Quantity,
+                transactionDto.Price);
         }
     }
 }
