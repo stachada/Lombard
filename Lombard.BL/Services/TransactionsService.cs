@@ -9,13 +9,13 @@ namespace Lombard.BL.Services
     {
         private readonly ITransactionsRepository _transactionsRepo;
         private readonly IItemsRepository _itemsRepo;
-        // private readonly ICustomersRepository _customersRepo;
+        //private readonly ICustomersRepository _customersRepo;
 
-        //public TransactionsService(ITransactionsRepository transactionsRepo, IItemsRepository itemsRepo)
-        //{
-        //    _transactionsRepo = transactionsRepo;
-        //    _itemsRepo = itemsRepo;
-        //}
+        public TransactionsService(ITransactionsRepository transactionsRepo, IItemsRepository itemsRepo)
+        {
+            _transactionsRepo = transactionsRepo;
+            _itemsRepo = itemsRepo;
+        }
 
         public async Task BuyAsync(int itemId, int customerId, int quantity, decimal price)
         {
