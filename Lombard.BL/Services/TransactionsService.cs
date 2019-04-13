@@ -19,7 +19,7 @@ namespace Lombard.BL.Services
 
         public async Task BuyAsync(int itemId, int customerId, int quantity, decimal price)
         {
-            var item = _itemsRepo.GetItemById(itemId);
+            var item = await _itemsRepo.GetItemById(itemId);
 
             if (item == null) throw new InvalidOperationException("Item not found");
 
@@ -28,7 +28,7 @@ namespace Lombard.BL.Services
             if (price <= 0) throw new InvalidOperationException("Price must be positive");
 
             item.IncreaseItemQuantityByGivenValue(quantity);
-            _itemsRepo.UpdateItem(item);
+            await _itemsRepo.UpdateItem(item);
             var transaction = Transaction.CreateTransaction(item, new Customer(), quantity, price);
             await _transactionsRepo.AddAsync(transaction);
 
@@ -36,7 +36,7 @@ namespace Lombard.BL.Services
 
         public async Task SellAsync(int itemId, int customerId, int quantity, decimal price)
         {
-            var item = _itemsRepo.GetItemById(itemId);
+            var item = await _itemsRepo.GetItemById(itemId);
 
             if (item == null) throw new InvalidOperationException("Item not found");
 
@@ -45,7 +45,7 @@ namespace Lombard.BL.Services
             if (price <= 0) throw new InvalidOperationException("Price must be positive");
 
             item.DecreaseItemQuantityByGivenValue(quantity);
-            _itemsRepo.UpdateItem(item);
+            await _itemsRepo.UpdateItem(item);
             var transaction = Transaction.CreateTransaction(item, new Customer(), -quantity, price);
             await _transactionsRepo.AddAsync(transaction);
         }

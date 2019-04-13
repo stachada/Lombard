@@ -17,7 +17,7 @@ namespace Lombard.Tests
         public async Task BuyAsync_GivenItemId_ShouldGetItemFromItemsRepository()
         {
             var mockItemsRepository = new Mock<IItemsRepository>();
-            mockItemsRepository.Setup(m => m.GetItemById(It.IsAny<int>())).Returns(new Item());
+            mockItemsRepository.Setup(m => m.GetItemById(It.IsAny<int>())).ReturnsAsync(new Item());
             var mockTransactionsRepository = new Mock<ITransactionsRepository>();
 
             var service = new TransactionsService(mockTransactionsRepository.Object, mockItemsRepository.Object);
@@ -31,7 +31,7 @@ namespace Lombard.Tests
         public void BuyAsync_NonExistingItem_ShouldThrowException()
         {
             var mockItemsRepository = new Mock<IItemsRepository>();
-            mockItemsRepository.Setup(m => m.GetItemById(It.IsAny<int>())).Returns((Item)null);
+            mockItemsRepository.Setup(m => m.GetItemById(It.IsAny<int>())).ReturnsAsync((Item)null);
             var mockTransactionsRepository = new Mock<ITransactionsRepository>();
 
             var service = new TransactionsService(mockTransactionsRepository.Object, mockItemsRepository.Object);
@@ -43,7 +43,7 @@ namespace Lombard.Tests
         public void BuyAsync_NonPositiveQuantity_ShouldThrowException()
         {
             var mockItemsRepository = new Mock<IItemsRepository>();
-            mockItemsRepository.Setup(m => m.GetItemById(It.IsAny<int>())).Returns(new Item());
+            mockItemsRepository.Setup(m => m.GetItemById(It.IsAny<int>())).ReturnsAsync(new Item());
             var mockTransactionsRepository = new Mock<ITransactionsRepository>();
             var service = new TransactionsService(mockTransactionsRepository.Object, mockItemsRepository.Object);
 
@@ -54,7 +54,7 @@ namespace Lombard.Tests
         public void BuyAsync_NonPositivePrice_ShouldThrowException()
         {
             var mockItemsRepository = new Mock<IItemsRepository>();
-            mockItemsRepository.Setup(m => m.GetItemById(It.IsAny<int>())).Returns(new Item());
+            mockItemsRepository.Setup(m => m.GetItemById(It.IsAny<int>())).ReturnsAsync(new Item());
             var mockTransactionsRepository = new Mock<ITransactionsRepository>();
             var service = new TransactionsService(mockTransactionsRepository.Object, mockItemsRepository.Object);
 
@@ -67,7 +67,7 @@ namespace Lombard.Tests
             var mockItem = new Mock<Item>();
             mockItem.Setup(m => m.IncreaseItemQuantityByGivenValue(It.IsAny<int>()));
             var mockItemsRepository = new Mock<IItemsRepository>();
-            mockItemsRepository.Setup(m => m.GetItemById(It.IsAny<int>())).Returns(mockItem.Object);
+            mockItemsRepository.Setup(m => m.GetItemById(It.IsAny<int>())).ReturnsAsync(mockItem.Object);
             var mockTransactionsRepository = new Mock<ITransactionsRepository>();
             var service = new TransactionsService(mockTransactionsRepository.Object, mockItemsRepository.Object);
 
@@ -82,7 +82,7 @@ namespace Lombard.Tests
             var mockItem = new Mock<Item>();
             mockItem.Setup(m => m.IncreaseItemQuantityByGivenValue(It.IsAny<int>()));
             var mockItemsRepository = new Mock<IItemsRepository>();
-            mockItemsRepository.Setup(m => m.GetItemById(It.IsAny<int>())).Returns(mockItem.Object);
+            mockItemsRepository.Setup(m => m.GetItemById(It.IsAny<int>())).ReturnsAsync(mockItem.Object);
             var mockTransactionsRepository = new Mock<ITransactionsRepository>();
             var service = new TransactionsService(mockTransactionsRepository.Object, mockItemsRepository.Object);
 
@@ -97,7 +97,7 @@ namespace Lombard.Tests
             var mockItem = new Mock<Item>();
             mockItem.Setup(m => m.IncreaseItemQuantityByGivenValue(It.IsAny<int>()));
             var mockItemsRepository = new Mock<IItemsRepository>();
-            mockItemsRepository.Setup(m => m.GetItemById(It.IsAny<int>())).Returns(mockItem.Object);
+            mockItemsRepository.Setup(m => m.GetItemById(It.IsAny<int>())).ReturnsAsync(mockItem.Object);
             var mockTransactionsRepository = new Mock<ITransactionsRepository>();
             var service = new TransactionsService(mockTransactionsRepository.Object, mockItemsRepository.Object);
 
