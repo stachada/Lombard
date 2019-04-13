@@ -9,7 +9,7 @@ namespace Lombard.BL.Services
         Task CreateNewItem(Item item);
         Task DeleteItem(int itemId);
         Task UpdateItem(Item item);
-        Task<IEnumerable<Item>> GetAllItems();
+        IEnumerable<Item> GetAllItems();
         Task<Item> GetItemById(int itemId);
     }
 }
