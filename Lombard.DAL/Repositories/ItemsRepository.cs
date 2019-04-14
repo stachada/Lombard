@@ -72,5 +72,10 @@ namespace Lombard.DAL.Repositories
         {
             return await _context.Items.GroupBy(i => i.ProductCategory).Select(x => new Item { ProductCategory = x.Key, Quantity = x.Sum(y => y.Quantity) }).ToListAsync();
         }
+
+        public async Task<IEnumerable<Item>> GetItemsWithQuantityLowerThanAsync(float quanity)
+        {
+            return await _context.Items.Where(i => i.Quantity <= quanity).ToListAsync();
+        }
     }
 }

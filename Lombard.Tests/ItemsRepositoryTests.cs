@@ -234,5 +234,26 @@ namespace Lombard.Tests
             Assert.AreEqual(6, list[0].Quantity);
             Assert.AreEqual(17,list[1].Quantity);
         }
+   
+        [Test]
+        public async Task GetItemsWithQuantityLowerThanAsync_ObjectsAreInDatabase_ObjectsWithPriceLowerThanGivenAreReturned()
+        {
+            //Arrange
+            var databaseSetMock = ItemConfigurator.CreateDbSetMockForItems(_items);
+            var contextMock = new Mock<DatabaseContext>();
+            contextMock.Setup(m => m.Items).Returns(databaseSetMock.Object);
+
+            var itemRepo = new ItemsRepository(contextMock.Object);
+            var bound = 8.6f;
+            //Action
+            var result = await itemRepo.GetItemsWithQuantityLowerThanAsync(bound);
+
+            var list = result.ToList();
+
+            //Assert
+            Assert.AreEqual(2, result.Count());
+            Assert.Less(list[0].Quantity,bound);
+            Assert.Less(list[1].Quantity, bound);
+        }
     }
 }

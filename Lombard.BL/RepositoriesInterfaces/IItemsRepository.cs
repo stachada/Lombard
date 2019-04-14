@@ -15,5 +15,6 @@ namespace Lombard.BL.RepositoriesInterfaces
         Task<Item> GetItemByIdAsync(int itemId);
         Task<IEnumerable<Item>> GetAllAsync();
         Task<IEnumerable<Item>> GetQuantityInCategoriesAsync();
+        Task<IEnumerable<Item>> GetItemsWithQuantityLowerThanAsync(float quanity);
     }
 }
