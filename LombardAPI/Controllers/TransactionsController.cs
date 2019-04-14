@@ -36,6 +36,9 @@ namespace LombardAPI.Controllers
         {
             var transactions = await _transactionsRepository.GetTransactions(query.PageNumber, query.PageSize);
 
+            if (transactions.Count == 0)
+                return NotFound();
+
             var transactionsToReturn = _mapper.Map<IEnumerable<TransactionDto>>(transactions);
 
             return Ok(transactionsToReturn);
@@ -45,6 +48,9 @@ namespace LombardAPI.Controllers
         public async Task<ActionResult> Get(int id)
         {
             var transaction = await _transactionsRepository.GetByIdAsync(id);
+
+            if (transaction == null)
+                return NotFound();
 
             var transactionToReturn = _mapper.Map<TransactionDto>(transaction);
 
