@@ -8,7 +8,7 @@ namespace Lombard.BL.RepositoriesInterfaces
 {
     public interface IItemsRepository
     {
-        Task AddItemAsync(Item item);
+        Task<int> AddItemAsync(Item item);
         Task DeleteItemAsync(int itemId);
         Task UpdateItemAsync(Item item);
         Task<Item> GetItemByIdAsync(int itemId);

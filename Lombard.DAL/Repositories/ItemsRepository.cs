@@ -17,10 +17,14 @@ namespace Lombard.DAL.Repositories
             _context = context;
         }
 
-        public async Task AddItemAsync(Item item)
+        public async Task<int> AddItemAsync(Item item)
         {
             _context.Items.Add(item);
             await _context.SaveChangesAsync();
+
+            int addedItemId = item.ItemId;
+
+            return addedItemId;
         }
 
         public async Task DeleteItemAsync(int itemId)
@@ -34,7 +38,7 @@ namespace Lombard.DAL.Repositories
             }
             else
             {
-                throw new InvalidOperationException("Item does not exist");
+                throw new InvalidOperationException("Item does not exist.");
             }
         }
 
@@ -60,7 +64,7 @@ namespace Lombard.DAL.Repositories
 
         public async Task<Item> GetItemByIdAsync(int itemId)
         {
-            return await _context.Items.FirstOrDefaultAsync(i => i.ItemId == itemId);
+            return await _context.Items.AsNoTracking().FirstOrDefaultAsync(i => i.ItemId == itemId);
         }
     }
 }
