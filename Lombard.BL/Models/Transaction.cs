@@ -17,7 +17,9 @@ namespace Lombard.BL.Models
             Transaction transaction = new Transaction();
             transaction.TransactionId = id;
             transaction.Item = item;
+            transaction.ItemId = item?.ItemId;
             transaction.Customer = customer;
+            transaction.CustomerId = customer?.CustomerId;
             transaction.Quantity = quantity;
             transaction.Price = price;
 
@@ -38,14 +40,15 @@ namespace Lombard.BL.Models
 
         [Required]
         public decimal Price { get; private set; }
-
-        [Required]
+        
         public Item Item { get; private set; }
 
         [NotMapped]
         public bool IsPurchase => Quantity >= 0;
 
         public Customer Customer { get; private set; }
+        public int? CustomerId { get; private set; }
+        public int? ItemId { get; private set; }
 
         /// <summary>
         /// Calculates the amount of transaction

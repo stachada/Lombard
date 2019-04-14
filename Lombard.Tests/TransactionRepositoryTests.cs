@@ -102,23 +102,23 @@ namespace Lombard.Tests
             contextMock.Verify(m => m.SaveChangesAsync(CancellationToken.None), Times.Once);
         }
 
-        [Test]
-        public async Task UpdateAsync_GivenTransaction_ShouldCallUpdateOnDbSetAndSaveChangesAsyncOnDbContext()
-        {
-            Mock<DbSet<Transaction>> dbSetMock = TransactionTestHelpers.CreateDbSetMockForTransaction(_transactions);
+        //[Test]
+        //public async Task UpdateAsync_GivenTransaction_ShouldCallUpdateOnDbSetAndSaveChangesAsyncOnDbContext()
+        //{
+        //    Mock<DbSet<Transaction>> dbSetMock = TransactionTestHelpers.CreateDbSetMockForTransaction(_transactions);
 
-            var contextMock = new Mock<DatabaseContext>();
-            contextMock.Setup(m => m.Transactions).Returns(dbSetMock.Object);
+        //    var contextMock = new Mock<DatabaseContext>();
+        //    contextMock.Setup(m => m.Transactions).Returns(dbSetMock.Object);
 
-            var repository = new TransactionsRepository(contextMock.Object);
+        //    var repository = new TransactionsRepository(contextMock.Object);
 
-            var transaction = Transaction.CreateTransaction(new Item { Quantity = 1 }, new Customer(), 1, 10.00M, 1);
+        //    var transaction = Transaction.CreateTransaction(new Item { Quantity = 1 }, new Customer(), 1, 10.00M, 1);
 
-            await repository.UpdateAsync(transaction);
+        //    await repository.UpdateAsync(transaction);
 
-            dbSetMock.Verify(m => m.Update(It.IsAny<Transaction>()), Times.Once);
-            contextMock.Verify(m => m.SaveChangesAsync(CancellationToken.None), Times.Once);
-        }
+        //    dbSetMock.Verify(m => m.Update(It.IsAny<Transaction>()), Times.Once);
+        //    contextMock.Verify(m => m.SaveChangesAsync(CancellationToken.None), Times.Once);
+        //}
 
         [Test]
         public void UpdateAsync_NonExistingTransaction_ShouldThrowException()

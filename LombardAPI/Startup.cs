@@ -34,6 +34,8 @@ namespace LombardAPI
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddEntityFrameworkSqlite().AddDbContext<DatabaseContext>();
 
+            services.AddTransient<SeedDatabase>();
+            services.AddScoped<ICustomersRepository, CustomersRepository>();
             services.AddScoped<IItemsRepository, ItemsRepository>();
             services.AddScoped<ITransactionsRepository, TransactionsRepository>();
             services.AddScoped<ITransactionsService, TransactionsService>();
@@ -42,11 +44,13 @@ namespace LombardAPI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, SeedDatabase seeder)
         {
             if (env.IsDevelopment())
             {
+                seeder.Seed();
                 app.UseDeveloperExceptionPage();
+                
             }
 
             app.UseMvc();

@@ -58,7 +58,6 @@ namespace Lombard.BL.Services
 
         public async Task UpdateTransactionAsync(Transaction transaction)
         {
-            if (transaction.Item == null) throw new InvalidOperationException("Item must be defined");
             if (transaction.Price <= 0) throw new InvalidOperationException("Price must be positive");
 
             await _transactionsRepo.UpdateAsync(transaction);

@@ -41,6 +41,7 @@ namespace Lombard.DAL.Repositories
 
             if (transactionFromDb != null)
             {
+                _context.Remove(transactionFromDb);
                 transaction.SetTransactionDate(DateTime.Now);
                 _context.Transactions.Update(transaction);
                 await _context.SaveChangesAsync();
