@@ -128,7 +128,7 @@ namespace Lombard.Tests
         public async Task Buy_GivenTransactionData_ShouldReturnCorrectActionResult()
         {
             var mockTransactionsService = new Mock<ITransactionsService>();
-            mockTransactionsService.Setup(m => m.BuyAsync(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<decimal>()))
+            mockTransactionsService.Setup(m => m.BuyAsync(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<float>(), It.IsAny<decimal>()))
                 .ReturnsAsync(Transaction.CreateTransaction(new Item(), new Customer(), 1, 1.00M));
 
             var mockTransactionsRepository = new Mock<ITransactionsRepository>();
@@ -159,7 +159,7 @@ namespace Lombard.Tests
         public async Task Buy_ServiceThrowsInvalidOperationException_ShouldReturnCorrectActionResult()
         {
             var mockTransactionsService = new Mock<ITransactionsService>();
-            mockTransactionsService.Setup(m => m.BuyAsync(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<decimal>()))
+            mockTransactionsService.Setup(m => m.BuyAsync(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<float>(), It.IsAny<decimal>()))
                 .ThrowsAsync(new InvalidOperationException());
 
             var mockTransactionsRepository = new Mock<ITransactionsRepository>();
@@ -190,7 +190,7 @@ namespace Lombard.Tests
         public async Task Sell_GivenTransactionData_ShouldReturnCorrectActionResult()
         {
             var mockTransactionsService = new Mock<ITransactionsService>();
-            mockTransactionsService.Setup(m => m.SellAsync(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<decimal>()))
+            mockTransactionsService.Setup(m => m.SellAsync(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<float>(), It.IsAny<decimal>()))
                 .ReturnsAsync(Transaction.CreateTransaction(new Item(), new Customer(), 1, 1.00M));
 
             var mockTransactionsRepository = new Mock<ITransactionsRepository>();
@@ -221,7 +221,7 @@ namespace Lombard.Tests
         public async Task Sell_ServiceThrowsInvalidOperationException_ShouldReturnCorrectActionResult()
         {
             var mockTransactionsService = new Mock<ITransactionsService>();
-            mockTransactionsService.Setup(m => m.SellAsync(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<decimal>()))
+            mockTransactionsService.Setup(m => m.SellAsync(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<float>(), It.IsAny<decimal>()))
                 .ThrowsAsync(new InvalidOperationException());
 
             var mockTransactionsRepository = new Mock<ITransactionsRepository>();

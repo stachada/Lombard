@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Lombard.BL.Helpers;
 using Lombard.BL.Models;
 using Lombard.BL.RepositoriesInterfaces;
 using Microsoft.EntityFrameworkCore;
@@ -17,10 +18,14 @@ namespace Lombard.DAL.Repositories
             _context = context;
         }
 
-        public async Task AddItemAsync(Item item)
+        public async Task<int> AddItemAsync(Item item)
         {
             _context.Items.Add(item);
             await _context.SaveChangesAsync();
+
+            int addedItemId = item.ItemId;
+
+            return addedItemId;
         }
 
         public async Task DeleteItemAsync(int itemId)
@@ -34,7 +39,7 @@ namespace Lombard.DAL.Repositories
             }
             else
             {
-                throw new InvalidOperationException("Item does not exist");
+                throw new InvalidOperationException("Item does not exist.");
             }
         }
 
@@ -60,7 +65,17 @@ namespace Lombard.DAL.Repositories
 
         public async Task<Item> GetItemByIdAsync(int itemId)
         {
-            return await _context.Items.FirstOrDefaultAsync(i => i.ItemId == itemId);
+            return await _context.Items.AsNoTracking().FirstOrDefaultAsync(i => i.ItemId == itemId);
+        }
+
+        public async Task<IEnumerable<Item>> GetQuantityInCategoriesAsync()
+        {
+            return await _context.Items.GroupBy(i => i.ProductCategory).Select(x => new Item { ProductCategory = x.Key, Quantity = x.Sum(y => y.Quantity) }).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Item>> GetItemsWithQuantityLowerThanAsync(float quanity)
+        {
+            return await _context.Items.Where(i => i.Quantity <= quanity).ToListAsync();
         }
     }
 }

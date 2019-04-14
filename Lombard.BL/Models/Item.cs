@@ -1,20 +1,23 @@
-﻿
+﻿using Lombard.BL.Helpers;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Lombard.BL.Models
 {
     public class Item
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ItemId { get; set; }
         public decimal Price { get; set; }
         public string Name { get; set; }
-        public int Quantity { get; set; }
+        public float Quantity { get; set; }
+        public ProductCategory ProductCategory { get; set; }
 
-
-        public virtual void IncreaseItemQuantityByGivenValue(int quantity)
+        public virtual void IncreaseItemQuantityByGivenValue(float quantity)
         {
             Quantity += quantity;
         }
 
-        public virtual void DecreaseItemQuantityByGivenValue(int quantity)
+        public virtual void DecreaseItemQuantityByGivenValue(float quantity)
         {
             Quantity -= quantity;
         }
@@ -24,9 +27,14 @@ namespace Lombard.BL.Models
             Name = name;
         }
 
+        public void ChangeItemCategory(ProductCategory category)
+        {
+            ProductCategory = category;
+        }
+
         public decimal CalculateTotalPrice()
         {
-            return Quantity * Price;
+            return (decimal)Quantity * Price;
         }
     }
 }
