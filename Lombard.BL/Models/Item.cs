@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace Lombard.BL.Models
 {
     public class Item
