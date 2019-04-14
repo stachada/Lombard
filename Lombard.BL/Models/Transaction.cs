@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Lombard.BL.Models
 {
@@ -27,14 +28,22 @@ namespace Lombard.BL.Models
 
         private Transaction()
         {
-
         }
 
         public int TransactionId { get; set; }
+
+        [Required]
         public DateTime TransactionDate { get; private set; }
+
+        [Required]
         public int Quantity { get; private set; }
+
+        [Required]
         public decimal Price { get; private set; }
+
+        [Required]
         public Item Item { get; private set; }
+
         public Customer Customer { get; private set; }
 
 

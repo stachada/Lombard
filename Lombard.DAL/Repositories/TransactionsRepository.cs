@@ -1,4 +1,5 @@
-﻿using Lombard.BL.Models;
+﻿using Lombard.BL.Helpers;
+using Lombard.BL.Models;
 using Lombard.BL.RepositoriesInterfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -17,9 +18,18 @@ namespace Lombard.DAL.Repositories
             _context = context;
         }
 
+        // calkowity obrot
+        // zysk
+
+        // Obsolte
         public async Task<IEnumerable<Transaction>> GetAllAsync()
         {
             return await _context.Transactions.ToListAsync();
+        }
+
+        public async Task<PagedList<Transaction>> GetTransactions(int pageNumber, int pageSize)
+        {
+            return await PagedList<Transaction>.CreateAsync(_context.Transactions, pageNumber, pageSize);
         }
 
         public async Task<Transaction> GetByIdAsync(int id)
