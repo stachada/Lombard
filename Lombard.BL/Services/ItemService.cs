@@ -15,7 +15,7 @@ namespace Lombard.BL.Services
             _itemsRepository = itemsRepository;
         }
 
-        public async Task CreateNewItem(Item item)
+        public async Task CreateNewItemAsync(Item item)
         {
             if (item.Price <= 0)
                 throw new InvalidOperationException("Item price must be positiv.");
@@ -24,32 +24,32 @@ namespace Lombard.BL.Services
             if (item.Quantity <= 0)
                 throw new InvalidOperationException("Item quantity must be positiv.");
 
-            await _itemsRepository.AddItem(item);
+            await _itemsRepository.AddItemAsync(item);
             
         }
 
-        public async Task DeleteItem(int itemId)
+        public async Task DeleteItemAsync(int itemId)
         {
             if (itemId <= 0)
                 throw new InvalidOperationException("Item Id must be positiv.");
 
-            await _itemsRepository.DeleteItem(itemId);
+            await _itemsRepository.DeleteItemAsync(itemId);
         }
 
-        public IEnumerable<Item> GetAllItems()
+        public async Task<IEnumerable<Item>> GetAllItemsAsync()
         {
-            return _itemsRepository.GetAll();
+            return await _itemsRepository.GetAllAsync();
         }
 
-        public async Task<Item> GetItemById(int itemId)
+        public async Task<Item> GetItemByIdAsync(int itemId)
         {
             if (itemId <= 0)
                 throw new InvalidOperationException("Item id must be positiv.");
 
-            return await _itemsRepository.GetItemById(itemId);
+            return await _itemsRepository.GetItemByIdAsync(itemId);
         }
 
-        public async Task UpdateItem(Item item)
+        public async Task UpdateItemAsync(Item item)
         {
             if (item.Price <= 0)
                 throw new InvalidOperationException("Item price must be positiv.");
@@ -58,7 +58,7 @@ namespace Lombard.BL.Services
             if (item.Quantity <= 0)
                 throw new InvalidOperationException("Item quantity must be positiv.");
 
-            await _itemsRepository.UpdateItem(item);
+            await _itemsRepository.UpdateItemAsync(item);
         }
     }
 }
