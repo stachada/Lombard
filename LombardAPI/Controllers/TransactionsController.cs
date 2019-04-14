@@ -7,6 +7,7 @@ using Lombard.BL.Models;
 using Lombard.BL.RepositoriesInterfaces;
 using Lombard.BL.Services;
 using LombardAPI.Dtos;
+using LombardAPI.Helpers;
 using LombardAPI.Queries;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -40,6 +41,8 @@ namespace LombardAPI.Controllers
                 return NotFound();
 
             var transactionsToReturn = _mapper.Map<IEnumerable<TransactionDto>>(transactions);
+
+            Response.AddPagination(transactions.CurrentPage, transactions.PageSize, transactions.TotalCount, transactions.TotalPages);
 
             return Ok(transactionsToReturn);
         }
