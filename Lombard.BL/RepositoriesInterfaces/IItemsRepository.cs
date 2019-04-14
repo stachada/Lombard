@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Lombard.BL.Helpers;
 using Lombard.BL.Models;
 
 namespace Lombard.BL.RepositoriesInterfaces
@@ -13,5 +14,6 @@ namespace Lombard.BL.RepositoriesInterfaces
         Task UpdateItemAsync(Item item);
         Task<Item> GetItemByIdAsync(int itemId);
         Task<IEnumerable<Item>> GetAllAsync();
+        Task<IEnumerable<Item>> GetQuantityInCategoriesAsync();
     }
 }

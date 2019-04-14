@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Lombard.BL.Helpers;
 using Lombard.BL.Models;
 using Lombard.BL.RepositoriesInterfaces;
 using Microsoft.EntityFrameworkCore;
@@ -65,6 +66,11 @@ namespace Lombard.DAL.Repositories
         public async Task<Item> GetItemByIdAsync(int itemId)
         {
             return await _context.Items.AsNoTracking().FirstOrDefaultAsync(i => i.ItemId == itemId);
+        }
+
+        public async Task<IEnumerable<Item>> GetQuantityInCategoriesAsync()
+        {
+            return await _context.Items.GroupBy(i => i.ProductCategory).Select(x => new Item { ProductCategory = x.Key, Quantity = x.Sum(y => y.Quantity) }).ToListAsync();
         }
     }
 }

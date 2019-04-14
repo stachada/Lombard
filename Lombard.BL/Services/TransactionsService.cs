@@ -18,7 +18,7 @@ namespace Lombard.BL.Services
             _customersRepo = customersRepo;
         }
 
-        public async Task<Transaction> BuyAsync(int itemId, int customerId, int quantity, decimal price)
+        public async Task<Transaction> BuyAsync(int itemId, int customerId, float quantity, decimal price)
         {
             var item = await _itemsRepo.GetItemByIdAsync(itemId);
 
@@ -37,7 +37,7 @@ namespace Lombard.BL.Services
             return transaction;
         }
 
-        public async Task<Transaction> SellAsync(int itemId, int customerId, int quantity, decimal price)
+        public async Task<Transaction> SellAsync(int itemId, int customerId, float quantity, decimal price)
         {
             var item = await _itemsRepo.GetItemByIdAsync(itemId);
 

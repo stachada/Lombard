@@ -15,7 +15,8 @@ namespace Lombard.Tests.TestHelpers
                 ItemId = 1,
                 Price = 25.10M,
                 Name = "Tire",
-                Quantity = 6
+                Quantity = 6,
+                ProductCategory = BL.Helpers.ProductCategory.Automotive
             };
 
             var item2 = new Item()
@@ -23,7 +24,8 @@ namespace Lombard.Tests.TestHelpers
                 ItemId = 2,
                 Price = 15.55M,
                 Name = "Chicken nuggets",
-                Quantity = 10
+                Quantity = 10,
+                ProductCategory = BL.Helpers.ProductCategory.Food
             };
 
             var item3 = new Item()
@@ -31,7 +33,8 @@ namespace Lombard.Tests.TestHelpers
                 ItemId = 3,
                 Price = 5.35M,
                 Name = "Rice bag",
-                Quantity = 7
+                Quantity = 7,
+                ProductCategory = BL.Helpers.ProductCategory.Food
             };
 
             var items = new List<Item>()

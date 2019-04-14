@@ -40,7 +40,7 @@ namespace Lombard.Tests
                 ItemId = 1,
                 Price = 123.70M,
                 Name = "Cup",
-                Quantity = 15
+                Quantity = 15,
             };
 
             //Action
@@ -212,6 +212,27 @@ namespace Lombard.Tests
             //Assert
             databaseSetMock.Verify(m => m.Remove(It.IsAny<Item>()), Times.Never);
             contextMock.Verify(m => m.SaveChangesAsync(CancellationToken.None), Times.Never);
+        }
+
+        [Test]
+        public async Task GetQuantityInCategoriesAsync_MultipleItemsWithDiffrentCategoriesExist_ObjectsAreGrouped()
+        {
+            //Arrange
+            var databaseSetMock = ItemConfigurator.CreateDbSetMockForItems(_items);
+            var contextMock = new Mock<DatabaseContext>();
+            contextMock.Setup(m => m.Items).Returns(databaseSetMock.Object);
+
+            var itemRepo = new ItemsRepository(contextMock.Object);
+
+            //Action
+            var result = await itemRepo.GetQuantityInCategoriesAsync();
+
+            var list = result.ToList();
+
+            //Assert
+            Assert.AreEqual(2, result.Count());
+            Assert.AreEqual(6, list[0].Quantity);
+            Assert.AreEqual(17,list[1].Quantity);
         }
     }
 }
