@@ -14,8 +14,6 @@ namespace LombardAPI.Profiles
         {
             CreateMap<TransactionDto, Transaction>();
             CreateMap<Transaction, TransactionDto>();
-            CreateMap<TransactionForUpdateDto, Transaction>();
-
         }
     }
 }
