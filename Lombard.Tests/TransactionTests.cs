@@ -36,12 +36,6 @@ namespace Lombard.Tests
         }
 
         [Test]
-        public void CreateTransaction_NullCustomer_ShouldThrowException()
-        {
-            Assert.Throws<InvalidOperationException>(() => Transaction.CreateTransaction(new Item(), null, 1, 10.00M));
-        }
-
-        [Test]
         public void CreateTransaction_NullItem_ShouldThrowException()
         {
             Assert.Throws<InvalidOperationException>(() => Transaction.CreateTransaction(null, new Customer(), 1, 10.00M));

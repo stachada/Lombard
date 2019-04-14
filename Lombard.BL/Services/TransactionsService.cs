@@ -9,19 +9,22 @@ namespace Lombard.BL.Services
     {
         private readonly ITransactionsRepository _transactionsRepo;
         private readonly IItemsRepository _itemsRepo;
-        //private readonly ICustomersRepository _customersRepo;
+        private readonly ICustomersRepository _customersRepo;
 
-        public TransactionsService(ITransactionsRepository transactionsRepo, IItemsRepository itemsRepo)
+        public TransactionsService(ITransactionsRepository transactionsRepo, IItemsRepository itemsRepo, ICustomersRepository customersRepo)
         {
             _transactionsRepo = transactionsRepo;
             _itemsRepo = itemsRepo;
+            _customersRepo = customersRepo;
         }
 
-        public async Task BuyAsync(int itemId, int customerId, int quantity, decimal price)
+        public async Task<Transaction> BuyAsync(int itemId, int customerId, int quantity, decimal price)
         {
             var item = await _itemsRepo.GetItemByIdAsync(itemId);
 
             if (item == null) throw new InvalidOperationException("Item not found");
+
+            var customer = await _customersRepo.GetCustomerByIdAsync(customerId);
 
             if (quantity <= 0) throw new InvalidOperationException("Quantity must be positive");
 
@@ -29,16 +32,18 @@ namespace Lombard.BL.Services
 
             item.IncreaseItemQuantityByGivenValue(quantity);
             await _itemsRepo.UpdateItemAsync(item);
-            var transaction = Transaction.CreateTransaction(item, new Customer(), quantity, price);
+            var transaction = Transaction.CreateTransaction(item, customer, quantity, price);
             await _transactionsRepo.AddAsync(transaction);
-
+            return transaction;
         }
 
-        public async Task SellAsync(int itemId, int customerId, int quantity, decimal price)
+        public async Task<Transaction> SellAsync(int itemId, int customerId, int quantity, decimal price)
         {
             var item = await _itemsRepo.GetItemByIdAsync(itemId);
 
             if (item == null) throw new InvalidOperationException("Item not found");
+
+            var customer = await _customersRepo.GetCustomerByIdAsync(customerId);
 
             if (quantity <= 0) throw new InvalidOperationException("Quantity must be positive");
 
@@ -46,8 +51,22 @@ namespace Lombard.BL.Services
 
             item.DecreaseItemQuantityByGivenValue(quantity);
             await _itemsRepo.UpdateItemAsync(item);
-            var transaction = Transaction.CreateTransaction(item, new Customer(), -quantity, price);
+            var transaction = Transaction.CreateTransaction(item, customer, -quantity, price);
             await _transactionsRepo.AddAsync(transaction);
+            return transaction;
+        }
+
+        public async Task UpdateTransactionAsync(Transaction transaction)
+        {
+            if (transaction.Item == null) throw new InvalidOperationException("Item must be defined");
+            if (transaction.Price <= 0) throw new InvalidOperationException("Price must be positive");
+
+            await _transactionsRepo.UpdateAsync(transaction);
+        }
+
+        public async Task DeleteTransactionAsync(int id)
+        {
+            await _transactionsRepo.DeleteAsync(id);
         }
     }
 }

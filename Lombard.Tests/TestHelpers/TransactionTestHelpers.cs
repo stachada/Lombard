@@ -75,11 +75,32 @@ namespace Lombard.Tests
                 Quantity = 7
             };
 
+            var transaction1 = Transaction.CreateTransaction(item1, customer1, 1, 10.00M, 1);
+            transaction1.SetTransactionDate(new DateTime(2019, 3, 1));
+
+            var transaction2 = Transaction.CreateTransaction(item2, customer1, 2, 15.00M, 2);
+            transaction2.SetTransactionDate(new DateTime(2019, 4, 1));
+
+            var transaction3 = Transaction.CreateTransaction(item3, customer2, 4, 5.00M, 3);
+            transaction3.SetTransactionDate(new DateTime(2019, 4, 2));
+
+            var transaction4 = Transaction.CreateTransaction(item1, customer2, -1, 11.00M, 4);
+            transaction4.SetTransactionDate(new DateTime(2019, 3, 2));
+
+            var transaction5 = Transaction.CreateTransaction(item2, customer2, -1, 20.05M, 5);
+            transaction5.SetTransactionDate(new DateTime(2019, 4, 3));
+
+            var transaction6 = Transaction.CreateTransaction(item3, customer1, -3, 6.45M, 6);
+            transaction6.SetTransactionDate(new DateTime(2019, 4, 4));
+
             var transactions = new List<Transaction>()
             {
-                Transaction.CreateTransaction(item1, customer1, 1, 10.00M, 1),
-                Transaction.CreateTransaction(item2, customer1, 2, 15.00M, 2),
-                Transaction.CreateTransaction(item3, customer2, 4, 5.00M, 3)
+                transaction1,
+                transaction2,
+                transaction3,
+                transaction4,
+                transaction5,
+                transaction6
             };
 
             return transactions;

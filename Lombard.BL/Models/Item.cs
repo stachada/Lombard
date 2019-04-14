@@ -14,7 +14,7 @@ namespace Lombard.BL.Models
             Quantity += quantity;
         }
 
-        public void DecreaseItemQuantityByGivenValue(int quantity)
+        public virtual void DecreaseItemQuantityByGivenValue(int quantity)
         {
             Quantity -= quantity;
         }

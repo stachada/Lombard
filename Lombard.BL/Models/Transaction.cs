@@ -11,9 +11,6 @@ namespace Lombard.BL.Models
             if (price <= 0)
                 throw new InvalidOperationException("price");
 
-            if (customer == null)
-                throw new InvalidOperationException("customer");
-
             if (item == null)
                 throw new InvalidOperationException("item");
 

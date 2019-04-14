@@ -29,6 +29,25 @@ namespace Lombard.Tests
         //    Assert.Fail();
         //}
 
+        [TestCase(1, 2, 2)]
+        [TestCase(2, 2, 2)]
+        [TestCase(3, 2, 2)]
+        [TestCase(2, 4, 2)]
+        public async Task GetTransactions_GivenPageNumberAndPageSize_ShouldReturnCorrectData(
+            int pageNumber, int pageSize, int expectedResult)
+        {
+            Mock<DbSet<Transaction>> dbSetMock = TransactionTestHelpers.CreateDbSetMockForTransaction(_transactions);
+
+            var contextMock = new Mock<DatabaseContext>();
+            contextMock.Setup(m => m.Transactions).Returns(dbSetMock.Object);
+
+            var repository = new TransactionsRepository(contextMock.Object);
+
+            var result = await repository.GetTransactions(pageNumber, pageSize);
+
+            Assert.That(result.Count, Is.EqualTo(expectedResult));
+        }
+
         [Test]
         public async Task GetById_GivenId_ReturnsTheCorrectTransaction()
         {
@@ -60,7 +79,7 @@ namespace Lombard.Tests
 
             var repository = new TransactionsRepository(contextMock.Object);
 
-            var result = await repository.GetByIdAsync(5);
+            var result = await repository.GetByIdAsync(7);
 
             Assert.That(null, Is.EqualTo(result));
         }
@@ -111,7 +130,7 @@ namespace Lombard.Tests
 
             var repository = new TransactionsRepository(contextMock.Object);
 
-            var transaction = Transaction.CreateTransaction(new Item { Quantity = 1 }, new Customer(), 1, 10.00M, 5);
+            var transaction = Transaction.CreateTransaction(new Item { Quantity = 1 }, new Customer(), 1, 10.00M, 7);
 
             Assert.ThrowsAsync<InvalidOperationException>(() => repository.UpdateAsync(transaction));
         }
@@ -142,9 +161,93 @@ namespace Lombard.Tests
 
             var repository = new TransactionsRepository(contextMock.Object);
 
-            Assert.ThrowsAsync<InvalidOperationException>(() => repository.DeleteAsync(5));
+            Assert.ThrowsAsync<InvalidOperationException>(() => repository.DeleteAsync(7));
         }
 
-        
+        [Test]
+        public async Task GetTurnover_InApril2019_ShouldReturnAProperValue()
+        {
+            Mock<DbSet<Transaction>> dbSetMock = TransactionTestHelpers.CreateDbSetMockForTransaction(_transactions);
+
+            var contextMock = new Mock<DatabaseContext>();
+            contextMock.Setup(m => m.Transactions).Returns(dbSetMock.Object);
+
+            var repository = new TransactionsRepository(contextMock.Object);
+
+            var result = await repository.GetTurnover(new DateTime(2019, 4, 1), new DateTime(2019, 4, 30));
+
+            Assert.That(result, Is.EqualTo(39.40M));
+        }
+
+        [Test]
+        public async Task GetTurnover_InMarch2019_ShouldReturnAProperValue()
+        {
+            Mock<DbSet<Transaction>> dbSetMock = TransactionTestHelpers.CreateDbSetMockForTransaction(_transactions);
+
+            var contextMock = new Mock<DatabaseContext>();
+            contextMock.Setup(m => m.Transactions).Returns(dbSetMock.Object);
+
+            var repository = new TransactionsRepository(contextMock.Object);
+
+            var result = await repository.GetTurnover(new DateTime(2019, 3, 1), new DateTime(2019, 3, 31));
+
+            Assert.That(result, Is.EqualTo(11.00M));
+        }
+
+        [Test]
+        public void GetTurnover_StartLaterThanEnd_ShouldThrowException()
+        {
+            Mock<DbSet<Transaction>> dbSetMock = TransactionTestHelpers.CreateDbSetMockForTransaction(_transactions);
+
+            var contextMock = new Mock<DatabaseContext>();
+            contextMock.Setup(m => m.Transactions).Returns(dbSetMock.Object);
+
+            var repository = new TransactionsRepository(contextMock.Object);
+
+            Assert.ThrowsAsync<InvalidOperationException>(() => repository.GetTurnover(new DateTime(2019, 5, 1), new DateTime(2019, 3, 31)));
+        }
+
+        [Test]
+        public async Task GetProfit_InApril2019_ShouldReturnAProperValue()
+        {
+            Mock<DbSet<Transaction>> dbSetMock = TransactionTestHelpers.CreateDbSetMockForTransaction(_transactions);
+
+            var contextMock = new Mock<DatabaseContext>();
+            contextMock.Setup(m => m.Transactions).Returns(dbSetMock.Object);
+
+            var repository = new TransactionsRepository(contextMock.Object);
+
+            var result = await repository.GetProfit(new DateTime(2019, 4, 1), new DateTime(2019, 4, 30));
+
+            Assert.That(result, Is.EqualTo(-10.60M));
+        }
+
+        [Test]
+        public async Task GetProfit_InMarch2019_ShouldReturnAProperValue()
+        {
+            Mock<DbSet<Transaction>> dbSetMock = TransactionTestHelpers.CreateDbSetMockForTransaction(_transactions);
+
+            var contextMock = new Mock<DatabaseContext>();
+            contextMock.Setup(m => m.Transactions).Returns(dbSetMock.Object);
+
+            var repository = new TransactionsRepository(contextMock.Object);
+
+            var result = await repository.GetProfit(new DateTime(2019, 3, 1), new DateTime(2019, 3, 31));
+
+            Assert.That(result, Is.EqualTo(1.00M));
+        }
+
+        [Test]
+        public void GetProfit_StartLaterThanEnd_ShouldThrowException()
+        {
+            Mock<DbSet<Transaction>> dbSetMock = TransactionTestHelpers.CreateDbSetMockForTransaction(_transactions);
+
+            var contextMock = new Mock<DatabaseContext>();
+            contextMock.Setup(m => m.Transactions).Returns(dbSetMock.Object);
+
+            var repository = new TransactionsRepository(contextMock.Object);
+
+            Assert.ThrowsAsync<InvalidOperationException>(() => repository.GetProfit(new DateTime(2019, 5, 1), new DateTime(2019, 3, 31)));
+        }
     }
 }

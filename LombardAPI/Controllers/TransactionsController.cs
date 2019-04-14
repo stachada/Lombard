@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Lombard.BL.Models;
 using Lombard.BL.Services;
 using LombardAPI.Dtos;
 using Microsoft.AspNetCore.Http;
@@ -21,23 +22,43 @@ namespace LombardAPI.Controllers
         }
 
         [HttpPost("buy")]
-        public async Task Buy([FromBody]TransactionDto transactionDto)
+        public async Task<ActionResult> Buy([FromBody]TransactionDto transactionDto)
         {
-            await _transactionsService.BuyAsync(
-                transactionDto.ItemId,
-                transactionDto.CustomerId,
-                transactionDto.Quantity,
-                transactionDto.Price);
+            Transaction transaction = null;
+            try
+            {
+                transaction = await _transactionsService.BuyAsync(
+                    transactionDto.ItemId,
+                    transactionDto.CustomerId,
+                    transactionDto.Quantity,
+                    transactionDto.Price);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return CreatedAtAction("Get", new { Id = transaction.TransactionId }, transaction);
         }
 
         [HttpPost("sell")]
-        public async Task Sell([FromBody]TransactionDto transactionDto)
+        public async Task<ActionResult> Sell([FromBody]TransactionDto transactionDto)
         {
-            await _transactionsService.SellAsync(
-                transactionDto.ItemId,
-                transactionDto.CustomerId,
-                transactionDto.Quantity,
-                transactionDto.Price);
+            Transaction transaction = null;
+            try
+            {
+                transaction = await _transactionsService.SellAsync(
+                    transactionDto.ItemId,
+                    transactionDto.CustomerId,
+                    transactionDto.Quantity,
+                    transactionDto.Price);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return CreatedAtAction("Get", new { Id = transaction.TransactionId }, transaction);
         }
     }
 }
