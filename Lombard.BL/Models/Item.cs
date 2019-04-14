@@ -1,8 +1,10 @@
-﻿
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Lombard.BL.Models
 {
     public class Item
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ItemId { get; set; }
         public decimal Price { get; set; }
         public string Name { get; set; }

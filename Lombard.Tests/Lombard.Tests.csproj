@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Lombard.BL\Lombard.BL.csproj" />
     <ProjectReference Include="..\Lombard.DAL\Lombard.DAL.csproj" />
+    <ProjectReference Include="..\LombardAPI\LombardAPI.csproj" />
   </ItemGroup>
 
 </Project>
