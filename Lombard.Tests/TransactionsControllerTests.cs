@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Lombard.BL.Helpers;
 using Lombard.BL.Models;
 using Lombard.BL.RepositoriesInterfaces;
 using Lombard.BL.Services;
@@ -12,19 +13,59 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
+using Microsoft.AspNetCore.Http;
+using System.Net;
+using Microsoft.AspNetCore.Http.Internal;
 
 namespace Lombard.Tests
 {
     [TestFixture]
     public class TransactionsControllerTests
     {
+        // How to mock extensions methods!!!
+        //[Test]
+        //public async Task GetTransactions_GivenTransactionsQuery_ShouldReturnCorrectActionResult()
+        //{
+        //    var mockTransactionsService = new Mock<ITransactionsService>();
+
+        //    var mockTransactionsRepository = new Mock<ITransactionsRepository>();
+        //    mockTransactionsRepository.Setup(m => m.GetTransactions(It.IsAny<int>(), It.IsAny<int>()))
+        //        .ReturnsAsync(new PagedList<Transaction>(GenerateTransactions(), 3, 1, 2));
+            
+
+        //    var mockMapper = new Mock<IMapper>();
+
+        //    var mockHttpContext = new Mock<HttpContext>();
+        //    //var mockHttpResponse = new Mock<HttpResponse>();
+        //    //mockHttpContext.Setup(m => m.Response).Returns(mockHttpResponse.Object);
+        //    var controller = new TransactionsController(
+        //        mockTransactionsService.Object,
+        //        mockTransactionsRepository.Object,
+        //        mockMapper.Object)
+        //    {
+        //        ControllerContext = new ControllerContext() { HttpContext = mockHttpContext.Object }
+        //    };
+
+        //    var query = new TransactionsQuery
+        //    {
+        //        PageNumber = 1,
+        //        PageSize = 2
+        //    };
+
+        //    var result = await controller.GetTransactions(query);
+
+        //    Assert.IsInstanceOf<OkObjectResult>(result);
+        //}
+
         [Test]
-        public async Task GetTransactions_GivenTransactionsQuery_ShouldReturnCorrectActionResult()
+        public async Task GetTransactions_GivenTransactionsQueryNoDataReturned_ShouldReturnCorrectActionResult()
         {
             var mockTransactionsService = new Mock<ITransactionsService>();
 
             var mockTransactionsRepository = new Mock<ITransactionsRepository>();
-
+            mockTransactionsRepository.Setup(m => m.GetTransactions(It.IsAny<int>(), It.IsAny<int>()))
+                .ReturnsAsync(new PagedList<Transaction>(new List<Transaction>(), 3, 1, 2));
             var mockMapper = new Mock<IMapper>();
 
             var controller = new TransactionsController(
@@ -40,7 +81,7 @@ namespace Lombard.Tests
 
             var result = await controller.GetTransactions(query);
 
-            Assert.IsInstanceOf<OkObjectResult>(result);
+            Assert.IsInstanceOf<NotFoundResult>(result);
         }
 
         [Test]
@@ -49,7 +90,8 @@ namespace Lombard.Tests
             var mockTransactionsService = new Mock<ITransactionsService>();
 
             var mockTransactionsRepository = new Mock<ITransactionsRepository>();
-
+            mockTransactionsRepository.Setup(m => m.GetByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync(Transaction.CreateTransaction(new Item(), new Customer(), 1, 1));
             var mockMapper = new Mock<IMapper>();
 
             var controller = new TransactionsController(
@@ -60,6 +102,26 @@ namespace Lombard.Tests
             var result = await controller.Get(1);
 
             Assert.IsInstanceOf<OkObjectResult>(result);
+        }
+
+        [Test]
+        public async Task Get_GivenIdNoDataReturned_ShouldReturnCorrectActionResult()
+        {
+            var mockTransactionsService = new Mock<ITransactionsService>();
+
+            var mockTransactionsRepository = new Mock<ITransactionsRepository>();
+            mockTransactionsRepository.Setup(m => m.GetByIdAsync(It.IsAny<int>()))
+                .ReturnsAsync((Transaction)null);
+            var mockMapper = new Mock<IMapper>();
+
+            var controller = new TransactionsController(
+                mockTransactionsService.Object,
+                mockTransactionsRepository.Object,
+                mockMapper.Object);
+
+            var result = await controller.Get(1);
+
+            Assert.IsInstanceOf<NotFoundResult>(result);
         }
 
         [Test]
@@ -282,6 +344,18 @@ namespace Lombard.Tests
             var result = await controller.Delete(1);
 
             Assert.IsInstanceOf<BadRequestObjectResult>(result);
+        }
+
+        private List<Transaction> GenerateTransactions()
+        {
+            var transactions = new List<Transaction>
+            {
+                Transaction.CreateTransaction(new Item(), new Customer(), 1, 10),
+                Transaction.CreateTransaction(new Item(), new Customer(), 1, 10),
+                Transaction.CreateTransaction(new Item(), new Customer(), 1, 10)
+            };
+
+            return transactions;
         }
     }
 }
