@@ -8,6 +8,6 @@ namespace LombardAPI.Dtos
         public decimal Price { get; set; }
         public string Name { get; set; }
         public float Quantity { get; set; }
-        public ProductCategory ProductCategory { get; set; }
+        public string ProductCategory { get; set; }
     }
 }

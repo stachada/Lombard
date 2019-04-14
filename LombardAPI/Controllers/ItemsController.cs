@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using Lombard.BL.Helpers;
 using Lombard.BL.Models;
 using Lombard.BL.Services;
 using LombardAPI.Dtos;
@@ -42,6 +43,12 @@ namespace LombardAPI.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateItem([FromBody] ItemDto itemDto)
         {
+
+            if (!Enum.TryParse(itemDto.ProductCategory, out ProductCategory category))
+            {
+                return BadRequest("Specified category is invalid.");
+            }
+
             try
             {
                 itemDto.ItemId  = await _itemsService.CreateNewItemAsync(_mapper.Map<Item>(itemDto));
