@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Lombard.BL.Helpers;
 using Lombard.BL.Models;
 using Lombard.BL.Services;
 using LombardAPI.Dtos;
@@ -25,38 +25,76 @@ namespace LombardAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task UpdateItem([FromBody]ItemDto itemDto)
+        public async Task<ActionResult> UpdateItem(int id,[FromBody]ItemDto itemDto)
         {
-            await _itemsService.UpdateItemAsync(_mapper.Map<Item>(itemDto));
+            itemDto.ItemId = id;
+            try
+            {
+                await _itemsService.UpdateItemAsync(_mapper.Map<Item>(itemDto));
+                return Ok(itemDto);
+
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost]
-        public async Task CreateItem([FromBody] ItemDto itemDto)
+        public async Task<ActionResult> CreateItem([FromBody] ItemDto itemDto)
         {
-            await _itemsService.CreateNewItemAsync(_mapper.Map<Item>(itemDto));
+
+            if (!Enum.TryParse(itemDto.ProductCategory, out ProductCategory category))
+            {
+                return BadRequest("Specified category is invalid.");
+            }
+
+            try
+            {
+                itemDto.ItemId  = await _itemsService.CreateNewItemAsync(_mapper.Map<Item>(itemDto));
+                return CreatedAtAction(nameof(GetItemById),new { id = itemDto.ItemId },itemDto);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpDelete("{id}")]
-        public async Task DeleteItem([FromQuery] int itemId)
+        public async Task<ActionResult> DeleteItem(int id)
         {
-            await _itemsService.DeleteItemAsync(itemId);
+            try
+            {
+                await _itemsService.DeleteItemAsync(id);
+                return Ok();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet]
-        public async Task<IEnumerable<ItemDto>> GetAllItems()
+        public async Task<ActionResult<IEnumerable<ItemDto>>> GetAllItems()
         {
             var items = await _itemsService.GetAllItemsAsync();
 
-            return _mapper.Map<IEnumerable<ItemDto>>(items);
+            return Ok(_mapper.Map<IEnumerable<ItemDto>>(items));
         }
 
         [HttpGet("{id}")]
-        public async Task<ItemDto> GetItemById(int id)
+        public async Task<ActionResult<ItemDto>> GetItemById(int id)
         {
-            var item = await _itemsService.GetItemByIdAsync(id);
+            try
+            {
+                var item = await _itemsService.GetItemByIdAsync(id);
 
-            return _mapper.Map<ItemDto>(item);
+                return Ok(_mapper.Map<ItemDto>(item));
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
-
     }
 }

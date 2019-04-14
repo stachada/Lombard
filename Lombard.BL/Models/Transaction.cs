@@ -6,13 +6,10 @@ namespace Lombard.BL.Models
 {
     public class Transaction
     {
-        public static Transaction CreateTransaction(Item item, Customer customer, int quantity, decimal price, int id = 0)
+        public static Transaction CreateTransaction(Item item, Customer customer, float quantity, decimal price, int id = 0)
         {
             if (price <= 0)
                 throw new InvalidOperationException("price");
-
-            if (customer == null)
-                throw new InvalidOperationException("customer");
 
             if (item == null)
                 throw new InvalidOperationException("item");
@@ -20,7 +17,9 @@ namespace Lombard.BL.Models
             Transaction transaction = new Transaction();
             transaction.TransactionId = id;
             transaction.Item = item;
+            transaction.ItemId = item?.ItemId;
             transaction.Customer = customer;
+            transaction.CustomerId = customer?.CustomerId;
             transaction.Quantity = quantity;
             transaction.Price = price;
 
@@ -37,18 +36,19 @@ namespace Lombard.BL.Models
         public DateTime TransactionDate { get; private set; }
 
         [Required]
-        public int Quantity { get; private set; }
+        public float Quantity { get; private set; }
 
         [Required]
         public decimal Price { get; private set; }
-
-        [Required]
+        
         public Item Item { get; private set; }
 
         [NotMapped]
         public bool IsPurchase => Quantity >= 0;
 
         public Customer Customer { get; private set; }
+        public int? CustomerId { get; private set; }
+        public int? ItemId { get; private set; }
 
         /// <summary>
         /// Calculates the amount of transaction
@@ -58,7 +58,7 @@ namespace Lombard.BL.Models
         /// </returns>
         public decimal GetTransactionAmount()
         {
-            return -1 * Price * Quantity;
+            return -1 * Price * (decimal)Quantity;
         }
 
         public void SetTransactionDate(DateTime date)

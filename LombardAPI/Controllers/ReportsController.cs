@@ -2,15 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using Lombard.BL.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LombardAPI.Controllers
 {
-    public class ReportsController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ReportsController : ControllerBase
     {
-        public IActionResult Index()
+        private readonly IReportService _reportService;
+        private readonly IMapper _mapper;
+
+        public ReportsController(IReportService reportService, IMapper mapper)
         {
-            return View();
+            _reportService = reportService;
+            _mapper = mapper;
         }
     }
 }

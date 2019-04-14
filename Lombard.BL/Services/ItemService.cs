@@ -15,7 +15,7 @@ namespace Lombard.BL.Services
             _itemsRepository = itemsRepository;
         }
 
-        public async Task CreateNewItemAsync(Item item)
+        public async Task<int> CreateNewItemAsync(Item item)
         {
             if (item.Price <= 0)
                 throw new InvalidOperationException("Item price must be positiv.");
@@ -24,15 +24,12 @@ namespace Lombard.BL.Services
             if (item.Quantity <= 0)
                 throw new InvalidOperationException("Item quantity must be positiv.");
 
-            await _itemsRepository.AddItemAsync(item);
+            return await _itemsRepository.AddItemAsync(item);
             
         }
 
         public async Task DeleteItemAsync(int itemId)
         {
-            if (itemId <= 0)
-                throw new InvalidOperationException("Item Id must be positiv.");
-
             await _itemsRepository.DeleteItemAsync(itemId);
         }
 

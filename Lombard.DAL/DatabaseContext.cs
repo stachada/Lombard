@@ -11,7 +11,6 @@ namespace Lombard.DAL
 
         public DatabaseContext()
         {
-            //Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

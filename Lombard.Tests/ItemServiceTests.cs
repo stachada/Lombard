@@ -116,19 +116,6 @@ namespace Lombard.Tests
         }
 
         [Test]
-        public void DeleteItem_InvalidItemId_ItemIsDeleted()
-        {
-            //Arrange
-            var mockItemsRepository = new Mock<IItemsRepository>();
-            var itemService = new ItemService(mockItemsRepository.Object);
-
-            //Action & Assert
-            Assert.ThrowsAsync<InvalidOperationException>(() => itemService.DeleteItemAsync(-12));
-
-            mockItemsRepository.Verify(m => m.DeleteItemAsync(It.IsAny<int>()), Times.Never);
-        }
-
-        [Test]
         public async Task GetAllItems_ItemsExistsInDatabase_AllItemsareReturned()
         {
             //Arrange

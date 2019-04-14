@@ -1,41 +1,22 @@
 ﻿using Lombard.BL.Models;
-using Microsoft.EntityFrameworkCore;
-using Moq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
-namespace Lombard.Tests
+namespace Lombard.DAL
 {
-    internal static class TransactionTestHelpers
+    public class SeedDatabase
     {
-        internal static Mock<DbSet<Transaction>> CreateDbSetMockForTransaction(IEnumerable<Transaction> transactions)
+        private readonly DatabaseContext _context;
+
+        public SeedDatabase(DatabaseContext context)
         {
-            var dbSetMock = new Mock<DbSet<Transaction>>();
-            dbSetMock.As<IAsyncEnumerable<Transaction>>()
-                .Setup(m => m.GetEnumerator())
-                .Returns(new TestAsyncEnumerator<Transaction>(transactions.AsQueryable().GetEnumerator()));
-
-            dbSetMock.As<IQueryable<Transaction>>()
-                .Setup(m => m.Provider)
-                .Returns(new TestAsyncQueryProvider<Transaction>(transactions.AsQueryable().Provider));
-
-            dbSetMock.As<IQueryable<Transaction>>()
-                .Setup(m => m.Expression)
-                .Returns(transactions.AsQueryable().Expression);
-
-            dbSetMock.As<IQueryable<Transaction>>()
-                .Setup(m => m.ElementType)
-                .Returns(transactions.AsQueryable().ElementType);
-
-            dbSetMock.As<IQueryable<Transaction>>()
-                .Setup(m => m.GetEnumerator())
-                .Returns(transactions.AsQueryable().GetEnumerator());
-            return dbSetMock;
+            _context = context;
+            _context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
         }
 
-        internal static IEnumerable<Transaction> GenerateTransactions()
+        public void Seed()
         {
             var customer1 = new Customer()
             {
@@ -50,6 +31,10 @@ namespace Lombard.Tests
                 Name = "Customer2",
                 BirthDate = new DateTime(1991, 05, 14)
             };
+
+            _context.Customers.Add(customer1);
+            _context.Customers.Add(customer2);
+            _context.SaveChanges();
 
             var item1 = new Item()
             {
@@ -74,6 +59,11 @@ namespace Lombard.Tests
                 Name = "Paczka ryżu",
                 Quantity = 7
             };
+
+            _context.Items.Add(item1);
+            _context.Items.Add(item2);
+            _context.Items.Add(item3);
+            _context.SaveChanges();
 
             var transaction1 = Transaction.CreateTransaction(item1, customer1, 1, 10.00M, 1);
             transaction1.SetTransactionDate(new DateTime(2019, 3, 1));
@@ -103,7 +93,12 @@ namespace Lombard.Tests
                 transaction6
             };
 
-            return transactions;
+            foreach (var transaction in transactions)
+            {
+                _context.Transactions.Add(transaction);
+            }
+
+            _context.SaveChanges();
         }
     }
 }
