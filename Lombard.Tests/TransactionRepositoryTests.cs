@@ -23,20 +23,26 @@ namespace Lombard.Tests
             _transactions = TransactionTestHelpers.GenerateTransactions();
         }
 
-        [Test]
-        public async Task GetAllAsync_ReturnsAllTransactions()
-        {
-            Mock<DbSet<Transaction>> dbSetMock = TransactionTestHelpers.CreateDbSetMockForTransaction(_transactions);
+        //[Test]
+        //public async Task GetAllAsync_ReturnsAllTransactions()
+        //{
+        //    Mock<DbSet<Transaction>> dbSetMock = TransactionTestHelpers.CreateDbSetMockForTransaction(_transactions);
 
-            var contextMock = new Mock<DatabaseContext>();
-            contextMock.Setup(m => m.Transactions).Returns(dbSetMock.Object);
+        //    var contextMock = new Mock<DatabaseContext>();
+        //    contextMock.Setup(m => m.Transactions).Returns(dbSetMock.Object);
 
-            var repository = new TransactionsRepository(contextMock.Object);
+        //    var repository = new TransactionsRepository(contextMock.Object);
 
-            var result = await repository.GetAllAsync();
+        //    var result = await repository.GetAllAsync();
 
-            Assert.That(3, Is.EqualTo(result.Count()));
-        }
+        //    Assert.That(3, Is.EqualTo(result.Count()));
+        //}
+
+        //[Test]
+        //public async Task GetTransactions_ShouldReturnACorrectPagedListOfTransactions()
+        //{
+        //    Assert.Fail();
+        //}
 
         [Test]
         public async Task GetById_GivenId_ReturnsTheCorrectTransaction()

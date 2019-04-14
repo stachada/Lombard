@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Lombard.BL.RepositoriesInterfaces;
 using Lombard.BL.Services;
+using Lombard.DAL;
+using Lombard.DAL.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +29,10 @@ namespace LombardAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddEntityFrameworkSqlite().AddDbContext<DatabaseContext>();
 
+            services.AddScoped<IItemsRepository, ItemsRepository>();
+            services.AddScoped<ITransactionsRepository, TransactionsRepository>();
             services.AddScoped<ITransactionsService, TransactionsService>();
         }
 

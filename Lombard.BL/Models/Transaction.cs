@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Lombard.BL.Models
 {
@@ -7,8 +8,8 @@ namespace Lombard.BL.Models
     {
         public static Transaction CreateTransaction(Item item, Customer customer, int quantity, decimal price, int id = 0)
         {
-            if (quantity <= 0)
-                throw new InvalidOperationException("quantity");
+            if (price <= 0)
+                throw new InvalidOperationException("price");
 
             if (customer == null)
                 throw new InvalidOperationException("customer");
@@ -44,12 +45,20 @@ namespace Lombard.BL.Models
         [Required]
         public Item Item { get; private set; }
 
+        [NotMapped]
+        public bool IsPurchase => Quantity >= 0;
+
         public Customer Customer { get; private set; }
 
-
+        /// <summary>
+        /// Calculates the amount of transaction
+        /// </summary>
+        /// <returns>
+        /// The negative value for purchase and positive value for sales
+        /// </returns>
         public decimal GetTransactionAmount()
         {
-            return Item.Price * Quantity;
+            return -1 * Price * Quantity;
         }
 
         public void SetTransactionDate(DateTime date)

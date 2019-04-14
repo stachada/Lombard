@@ -18,15 +18,6 @@ namespace Lombard.DAL.Repositories
             _context = context;
         }
 
-        // calkowity obrot
-        // zysk
-
-        // Obsolte
-        public async Task<IEnumerable<Transaction>> GetAllAsync()
-        {
-            return await _context.Transactions.ToListAsync();
-        }
-
         public async Task<PagedList<Transaction>> GetTransactions(int pageNumber, int pageSize)
         {
             return await PagedList<Transaction>.CreateAsync(_context.Transactions, pageNumber, pageSize);
@@ -73,6 +64,24 @@ namespace Lombard.DAL.Repositories
             {
                 throw new InvalidOperationException("Transaction not found");
             }
+        }
+
+        public async Task<decimal> GetTurnover(DateTime start, DateTime end)
+        {
+            var turnover = await _context.Transactions
+                .Where(t => !t.IsPurchase && t.TransactionDate >= start && t.TransactionDate <= end)
+                .SumAsync(t => t.GetTransactionAmount());
+
+            return turnover;
+        }
+
+        public async Task<decimal> GetProfit(DateTime start, DateTime end)
+        {
+            var profit = await _context.Transactions
+                .Where(t => t.TransactionDate >= start && t.TransactionDate <= end)
+                .SumAsync(t => t.GetTransactionAmount());
+
+            return profit;
         }
     }
 }

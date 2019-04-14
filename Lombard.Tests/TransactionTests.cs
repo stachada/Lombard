@@ -29,10 +29,10 @@ namespace Lombard.Tests
         }
 
         [TestCase(0)]
-        [TestCase(-1)]
-        public void CreateTransaction_NegativeQuantity_ShouldThrowException(int quantity)
+        [TestCase(-10)]
+        public void CreateTransaction_NegativePrice_ShouldThrowException(int price)
         {
-            Assert.Throws<InvalidOperationException>(() => Transaction.CreateTransaction(new Item(), new Customer(), quantity, 10.00M));
+            Assert.Throws<InvalidOperationException>(() => Transaction.CreateTransaction(new Item(), new Customer(), 1, price));
         }
 
         [Test]
@@ -48,7 +48,7 @@ namespace Lombard.Tests
         }
 
         [Test]
-        public void GetTransactionAmount_GivenPriceAndQuantity_ShouldReturnProperValue()
+        public void GetTransactionAmount_GivenPriceAndNegativeQuantity_ShouldReturnPositiveValue()
         {
             var customer = new Customer()
             {
@@ -65,15 +65,15 @@ namespace Lombard.Tests
                 Quantity = 10,
             };
 
-            var transaction = Transaction.CreateTransaction(item, customer, 1, 10.00M);
+            var transaction = Transaction.CreateTransaction(item, customer, -1, 10.00M);
 
             var result = transaction.GetTransactionAmount();
 
-            Assert.That(10.00M, Is.EqualTo(result));
+            Assert.That(result, Is.EqualTo(10.00M));
         }
 
         [Test]
-        public void GetTransactionAmount_GivenAnotherPriceAndQuantity_ShouldReturnProperValue()
+        public void GetTransactionAmount_GivenPriceAndPositiveQuantity_ShouldReturnNegativeValue()
         {
             var customer = new Customer()
             {
@@ -94,7 +94,34 @@ namespace Lombard.Tests
 
             var result = transaction.GetTransactionAmount();
 
-            Assert.That(12.00M, Is.EqualTo(result));
+            Assert.That(result, Is.EqualTo(-10.00M));
+        }
+
+        [TestCase(0, true)]
+        [TestCase(1, true)]
+        [TestCase(-1, false)]
+        public void IsPurchase_PositiveNonNegative_ShouldReturnTrue(int quantity, bool expectedResult)
+        {
+            var customer = new Customer()
+            {
+                CustomerId = 1,
+                Name = "Customer1",
+                BirthDate = new System.DateTime(1990, 12, 12)
+            };
+
+            var item = new Item()
+            {
+                ItemId = 1,
+                Price = 12.00M,
+                Name = "",
+                Quantity = 10,
+            };
+
+            var transaction = Transaction.CreateTransaction(item, customer, quantity, 10.00M);
+
+            var result = transaction.IsPurchase;
+
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
     }
 }

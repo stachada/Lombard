@@ -1,4 +1,5 @@
-﻿using Lombard.BL.Models;
+﻿using Lombard.BL.Helpers;
+using Lombard.BL.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,7 +9,8 @@ namespace Lombard.BL.RepositoriesInterfaces
 {
     public interface ITransactionsRepository
     {
-        Task<IEnumerable<Transaction>> GetAllAsync();
+        Task<PagedList<Transaction>> GetTransactions(int pageNumber, int pageSize);
+        //Task<IEnumerable<Transaction>> GetAllAsync();
         Task<Transaction> GetByIdAsync(int id);
         Task AddAsync(Transaction transaction);
         Task UpdateAsync(Transaction transaction);
