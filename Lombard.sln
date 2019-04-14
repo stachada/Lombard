@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lombard.BL", "Lombard.BL\Lo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lombard.DAL", "Lombard.DAL\Lombard.DAL.csproj", "{C29CEAB9-2128-4C0C-9264-66CE054DA1EB}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LombardAPI", "LombardAPI\LombardAPI.csproj", "{238682C0-13DB-47EE-8A48-F97E3817CD30}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{C29CEAB9-2128-4C0C-9264-66CE054DA1EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C29CEAB9-2128-4C0C-9264-66CE054DA1EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C29CEAB9-2128-4C0C-9264-66CE054DA1EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{238682C0-13DB-47EE-8A48-F97E3817CD30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{238682C0-13DB-47EE-8A48-F97E3817CD30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{238682C0-13DB-47EE-8A48-F97E3817CD30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{238682C0-13DB-47EE-8A48-F97E3817CD30}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
