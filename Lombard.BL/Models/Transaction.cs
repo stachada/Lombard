@@ -6,7 +6,7 @@ namespace Lombard.BL.Models
 {
     public class Transaction
     {
-        public static Transaction CreateTransaction(Item item, Customer customer, int quantity, decimal price, int id = 0)
+        public static Transaction CreateTransaction(Item item, Customer customer, float quantity, decimal price, int id = 0)
         {
             if (price <= 0)
                 throw new InvalidOperationException("price");
@@ -37,7 +37,7 @@ namespace Lombard.BL.Models
         public DateTime TransactionDate { get; private set; }
 
         [Required]
-        public int Quantity { get; private set; }
+        public float Quantity { get; private set; }
 
         [Required]
         public decimal Price { get; private set; }
@@ -58,7 +58,7 @@ namespace Lombard.BL.Models
         /// </returns>
         public decimal GetTransactionAmount()
         {
-            return -1 * Price * Quantity;
+            return -1 * Price * (decimal)Quantity;
         }
 
         public void SetTransactionDate(DateTime date)
