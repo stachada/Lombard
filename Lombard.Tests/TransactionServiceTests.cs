@@ -17,21 +17,21 @@ namespace Lombard.Tests
         public async Task BuyAsync_GivenItemId_ShouldGetItemFromItemsRepository()
         {
             var mockItemsRepository = new Mock<IItemsRepository>();
-            mockItemsRepository.Setup(m => m.GetItemById(It.IsAny<int>())).ReturnsAsync(new Item());
+            mockItemsRepository.Setup(m => m.GetItemByIdAsync(It.IsAny<int>())).ReturnsAsync(new Item());
             var mockTransactionsRepository = new Mock<ITransactionsRepository>();
 
             var service = new TransactionsService(mockTransactionsRepository.Object, mockItemsRepository.Object);
 
             await service.BuyAsync(1, 1, 10, 10.00M);
 
-            mockItemsRepository.Verify(m => m.GetItemById(1), Times.Once);
+            mockItemsRepository.Verify(m => m.GetItemByIdAsync(1), Times.Once);
         }
 
         [Test]
         public void BuyAsync_NonExistingItem_ShouldThrowException()
         {
             var mockItemsRepository = new Mock<IItemsRepository>();
-            mockItemsRepository.Setup(m => m.GetItemById(It.IsAny<int>())).ReturnsAsync((Item)null);
+            mockItemsRepository.Setup(m => m.GetItemByIdAsync(It.IsAny<int>())).ReturnsAsync((Item)null);
             var mockTransactionsRepository = new Mock<ITransactionsRepository>();
 
             var service = new TransactionsService(mockTransactionsRepository.Object, mockItemsRepository.Object);
@@ -43,7 +43,7 @@ namespace Lombard.Tests
         public void BuyAsync_NonPositiveQuantity_ShouldThrowException()
         {
             var mockItemsRepository = new Mock<IItemsRepository>();
-            mockItemsRepository.Setup(m => m.GetItemById(It.IsAny<int>())).ReturnsAsync(new Item());
+            mockItemsRepository.Setup(m => m.GetItemByIdAsync(It.IsAny<int>())).ReturnsAsync(new Item());
             var mockTransactionsRepository = new Mock<ITransactionsRepository>();
             var service = new TransactionsService(mockTransactionsRepository.Object, mockItemsRepository.Object);
 
@@ -54,7 +54,7 @@ namespace Lombard.Tests
         public void BuyAsync_NonPositivePrice_ShouldThrowException()
         {
             var mockItemsRepository = new Mock<IItemsRepository>();
-            mockItemsRepository.Setup(m => m.GetItemById(It.IsAny<int>())).ReturnsAsync(new Item());
+            mockItemsRepository.Setup(m => m.GetItemByIdAsync(It.IsAny<int>())).ReturnsAsync(new Item());
             var mockTransactionsRepository = new Mock<ITransactionsRepository>();
             var service = new TransactionsService(mockTransactionsRepository.Object, mockItemsRepository.Object);
 
@@ -67,7 +67,7 @@ namespace Lombard.Tests
             var mockItem = new Mock<Item>();
             mockItem.Setup(m => m.IncreaseItemQuantityByGivenValue(It.IsAny<int>()));
             var mockItemsRepository = new Mock<IItemsRepository>();
-            mockItemsRepository.Setup(m => m.GetItemById(It.IsAny<int>())).ReturnsAsync(mockItem.Object);
+            mockItemsRepository.Setup(m => m.GetItemByIdAsync(It.IsAny<int>())).ReturnsAsync(mockItem.Object);
             var mockTransactionsRepository = new Mock<ITransactionsRepository>();
             var service = new TransactionsService(mockTransactionsRepository.Object, mockItemsRepository.Object);
 
@@ -82,13 +82,13 @@ namespace Lombard.Tests
             var mockItem = new Mock<Item>();
             mockItem.Setup(m => m.IncreaseItemQuantityByGivenValue(It.IsAny<int>()));
             var mockItemsRepository = new Mock<IItemsRepository>();
-            mockItemsRepository.Setup(m => m.GetItemById(It.IsAny<int>())).ReturnsAsync(mockItem.Object);
+            mockItemsRepository.Setup(m => m.GetItemByIdAsync(It.IsAny<int>())).ReturnsAsync(mockItem.Object);
             var mockTransactionsRepository = new Mock<ITransactionsRepository>();
             var service = new TransactionsService(mockTransactionsRepository.Object, mockItemsRepository.Object);
 
             await service.BuyAsync(1, 1, 1, 10.00M);
 
-            mockItemsRepository.Verify(m => m.UpdateItem(It.IsAny<Item>()), Times.Once);
+            mockItemsRepository.Verify(m => m.UpdateItemAsync(It.IsAny<Item>()), Times.Once);
         }
 
         [Test]
@@ -97,7 +97,7 @@ namespace Lombard.Tests
             var mockItem = new Mock<Item>();
             mockItem.Setup(m => m.IncreaseItemQuantityByGivenValue(It.IsAny<int>()));
             var mockItemsRepository = new Mock<IItemsRepository>();
-            mockItemsRepository.Setup(m => m.GetItemById(It.IsAny<int>())).ReturnsAsync(mockItem.Object);
+            mockItemsRepository.Setup(m => m.GetItemByIdAsync(It.IsAny<int>())).ReturnsAsync(mockItem.Object);
             var mockTransactionsRepository = new Mock<ITransactionsRepository>();
             var service = new TransactionsService(mockTransactionsRepository.Object, mockItemsRepository.Object);
 

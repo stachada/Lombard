@@ -8,10 +8,10 @@ namespace Lombard.BL.RepositoriesInterfaces
 {
     public interface IItemsRepository
     {
-        Task AddItem(Item item);
-        Task DeleteItem(int itemId);
-        Task UpdateItem(Item item);
-        Task<Item> GetItemById(int itemId);
-        IEnumerable<Item> GetAll();
+        Task AddItemAsync(Item item);
+        Task DeleteItemAsync(int itemId);
+        Task UpdateItemAsync(Item item);
+        Task<Item> GetItemByIdAsync(int itemId);
+        Task<IEnumerable<Item>> GetAllAsync();
     }
 }

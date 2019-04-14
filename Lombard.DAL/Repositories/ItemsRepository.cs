@@ -17,15 +17,15 @@ namespace Lombard.DAL.Repositories
             _context = context;
         }
 
-        public async Task AddItem(Item item)
+        public async Task AddItemAsync(Item item)
         {
             _context.Items.Add(item);
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteItem(int itemId)
+        public async Task DeleteItemAsync(int itemId)
         {
-            var itemToDelete =  await GetItemById(itemId);
+            var itemToDelete =  await GetItemByIdAsync(itemId);
 
             if(itemToDelete != null)
             {
@@ -38,9 +38,9 @@ namespace Lombard.DAL.Repositories
             }
         }
 
-        public async Task UpdateItem(Item item)
+        public async Task UpdateItemAsync(Item item)
         {
-            var itemFromDatabase = await GetItemById(item.ItemId);
+            var itemFromDatabase = await GetItemByIdAsync(item.ItemId);
 
             if (itemFromDatabase != null)
             {
@@ -53,12 +53,12 @@ namespace Lombard.DAL.Repositories
             }
         }
 
-        public IEnumerable<Item> GetAll()
+        public async Task<IEnumerable<Item>> GetAllAsync()
         {
-            return _context.Items.ToList();
+            return await _context.Items.ToListAsync();
         }
 
-        public async Task<Item> GetItemById(int itemId)
+        public async Task<Item> GetItemByIdAsync(int itemId)
         {
             return await _context.Items.FirstOrDefaultAsync(i => i.ItemId == itemId);
         }

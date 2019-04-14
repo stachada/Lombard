@@ -30,10 +30,10 @@ namespace Lombard.Tests
             };
 
             //Action
-            await itemService.CreateNewItem(itemToAdd);
+            await itemService.CreateNewItemAsync(itemToAdd);
 
             //Assert
-            mockItemsRepository.Verify(m => m.AddItem(It.IsAny<Item>()), Times.Once);
+            mockItemsRepository.Verify(m => m.AddItemAsync(It.IsAny<Item>()), Times.Once);
         }
 
         [TestCase(0)]
@@ -52,9 +52,9 @@ namespace Lombard.Tests
                 Quantity = 15
             };
             // Action & Assert
-            Assert.ThrowsAsync<InvalidOperationException>(() => itemService.CreateNewItem(itemToAdd));
+            Assert.ThrowsAsync<InvalidOperationException>(() => itemService.CreateNewItemAsync(itemToAdd));
 
-            mockItemsRepository.Verify(m => m.AddItem(It.IsAny<Item>()), Times.Never);
+            mockItemsRepository.Verify(m => m.AddItemAsync(It.IsAny<Item>()), Times.Never);
         }
 
         [TestCase("")]
@@ -74,9 +74,9 @@ namespace Lombard.Tests
             };
 
             //Action and Assert
-            Assert.ThrowsAsync<InvalidOperationException>(() => itemService.CreateNewItem(itemToAdd));
+            Assert.ThrowsAsync<InvalidOperationException>(() => itemService.CreateNewItemAsync(itemToAdd));
 
-            mockItemsRepository.Verify(m => m.AddItem(It.IsAny<Item>()), Times.Never);
+            mockItemsRepository.Verify(m => m.AddItemAsync(It.IsAny<Item>()), Times.Never);
         }
 
         [TestCase(0)]
@@ -96,9 +96,9 @@ namespace Lombard.Tests
             };
 
             //Action & Assert
-            Assert.ThrowsAsync<InvalidOperationException>(() => itemService.CreateNewItem(itemToAdd));
+            Assert.ThrowsAsync<InvalidOperationException>(() => itemService.CreateNewItemAsync(itemToAdd));
 
-            mockItemsRepository.Verify(m => m.AddItem(It.IsAny<Item>()), Times.Never);
+            mockItemsRepository.Verify(m => m.AddItemAsync(It.IsAny<Item>()), Times.Never);
         }
 
         [Test]
@@ -109,10 +109,10 @@ namespace Lombard.Tests
             var itemService = new ItemService(mockItemsRepository.Object);
 
             //Action
-            await itemService.DeleteItem(12);
+            await itemService.DeleteItemAsync(12);
 
             //Assert
-            mockItemsRepository.Verify(m => m.DeleteItem(It.IsAny<int>()), Times.Once);
+            mockItemsRepository.Verify(m => m.DeleteItemAsync(It.IsAny<int>()), Times.Once);
         }
 
         [Test]
@@ -123,43 +123,43 @@ namespace Lombard.Tests
             var itemService = new ItemService(mockItemsRepository.Object);
 
             //Action & Assert
-            Assert.ThrowsAsync<InvalidOperationException>(() => itemService.DeleteItem(-12));
+            Assert.ThrowsAsync<InvalidOperationException>(() => itemService.DeleteItemAsync(-12));
 
-            mockItemsRepository.Verify(m => m.DeleteItem(It.IsAny<int>()), Times.Never);
+            mockItemsRepository.Verify(m => m.DeleteItemAsync(It.IsAny<int>()), Times.Never);
         }
 
         [Test]
-        public void GetAllItems_ItemsExistsInDatabase_AllItemsareReturned()
+        public async Task GetAllItems_ItemsExistsInDatabase_AllItemsareReturned()
         {
             //Arrange
             var mockItemsRepository = new Mock<IItemsRepository>();
-            mockItemsRepository.Setup(m => m.GetAll()).Returns(ItemConfigurator.GenerateItems());
+            mockItemsRepository.Setup(m => m.GetAllAsync()).ReturnsAsync(ItemConfigurator.GenerateItems());
 
             var itemService = new ItemService(mockItemsRepository.Object);
 
             //Action
-            var allItems = itemService.GetAllItems();
+            var allItems = await itemService.GetAllItemsAsync();
 
             //Assert
-            mockItemsRepository.Verify(m => m.GetAll(), Times.Once);
+            mockItemsRepository.Verify(m => m.GetAllAsync(), Times.Once);
 
             Assert.AreEqual(3, allItems.Count());
         }
 
         [Test]
-        public void GetAllItems_DatabaseIsEmpty_NoItemsAreReturned()
+        public async Task GetAllItems_DatabaseIsEmpty_NoItemsAreReturned()
         {
             //Arrange
             var mockItemsRepository = new Mock<IItemsRepository>();
-            mockItemsRepository.Setup(m => m.GetAll()).Returns(new List<Item>());
+            mockItemsRepository.Setup(m => m.GetAllAsync()).ReturnsAsync(new List<Item>());
 
             var itemService = new ItemService(mockItemsRepository.Object);
 
             //Action
-            var allItems = itemService.GetAllItems();
+            var allItems = await itemService.GetAllItemsAsync();
 
             //Assert
-            mockItemsRepository.Verify(m => m.GetAll(), Times.Once);
+            mockItemsRepository.Verify(m => m.GetAllAsync(), Times.Once);
 
             Assert.IsEmpty(allItems);
         }
@@ -171,15 +171,15 @@ namespace Lombard.Tests
             var item = new Item { ItemId = 1 };
 
             var mockItemsRepository = new Mock<IItemsRepository>();
-            mockItemsRepository.Setup(m => m.GetItemById(It.IsAny<int>())).Returns(Task.FromResult(item));
+            mockItemsRepository.Setup(m => m.GetItemByIdAsync(It.IsAny<int>())).Returns(Task.FromResult(item));
 
             var itemService = new ItemService(mockItemsRepository.Object);
 
             //Action
-            var itemWithGivenId = await itemService.GetItemById(1);
+            var itemWithGivenId = await itemService.GetItemByIdAsync(1);
 
             //Assert
-            mockItemsRepository.Verify(m => m.GetItemById(It.IsAny<int>()), Times.Once);
+            mockItemsRepository.Verify(m => m.GetItemByIdAsync(It.IsAny<int>()), Times.Once);
 
             Assert.AreEqual(itemWithGivenId.ItemId, 1);
         }
@@ -191,15 +191,15 @@ namespace Lombard.Tests
             Item item = null;
 
             var mockItemsRepository = new Mock<IItemsRepository>();
-             mockItemsRepository.Setup(m => m.GetItemById(It.IsAny<int>())).Returns(Task.FromResult(item));
+             mockItemsRepository.Setup(m => m.GetItemByIdAsync(It.IsAny<int>())).Returns(Task.FromResult(item));
 
             var itemService = new ItemService(mockItemsRepository.Object);
 
             //Action
-            var itemWithGivenId = await itemService.GetItemById(1);
+            var itemWithGivenId = await itemService.GetItemByIdAsync(1);
 
             //Assert
-            mockItemsRepository.Verify(m => m.GetItemById(It.IsAny<int>()), Times.Once);
+            mockItemsRepository.Verify(m => m.GetItemByIdAsync(It.IsAny<int>()), Times.Once);
 
             Assert.IsNull(itemWithGivenId);
         }
@@ -214,9 +214,9 @@ namespace Lombard.Tests
             var itemService = new ItemService(mockItemsRepository.Object);
 
             //Action & Assert
-            Assert.ThrowsAsync<InvalidOperationException>(() => itemService.GetItemById(itemId));
+            Assert.ThrowsAsync<InvalidOperationException>(() => itemService.GetItemByIdAsync(itemId));
 
-            mockItemsRepository.Verify(m => m.GetItemById(It.IsAny<int>()), Times.Never);
+            mockItemsRepository.Verify(m => m.GetItemByIdAsync(It.IsAny<int>()), Times.Never);
         }
 
         [Test]
@@ -225,15 +225,15 @@ namespace Lombard.Tests
             //Arrange
             var itemToUpdate = new Item { ItemId = 1, Name = "Tire", Price = 123.5M, Quantity = 5434 };
             var mockItemsRepository = new Mock<IItemsRepository>();
-            mockItemsRepository.Setup(m => m.UpdateItem(It.IsAny<Item>())).Callback((Item item) => item.Name = "Rice").Returns(Task.FromResult(itemToUpdate));
+            mockItemsRepository.Setup(m => m.UpdateItemAsync(It.IsAny<Item>())).Callback((Item item) => item.Name = "Rice").Returns(Task.FromResult(itemToUpdate));
 
             var itemService = new ItemService(mockItemsRepository.Object);
 
             //Action
-            await itemService.UpdateItem(itemToUpdate);
+            await itemService.UpdateItemAsync(itemToUpdate);
 
             //Assert
-            mockItemsRepository.Verify(m => m.UpdateItem(It.IsAny<Item>()), Times.Once);
+            mockItemsRepository.Verify(m => m.UpdateItemAsync(It.IsAny<Item>()), Times.Once);
             Assert.AreEqual("Rice", itemToUpdate.Name);
 
         }
@@ -247,10 +247,10 @@ namespace Lombard.Tests
             var itemService = new ItemService(mockItemsRepository.Object);
 
             //Action & Assert
-            Assert.ThrowsAsync<InvalidOperationException>(() =>itemService.UpdateItem(new Item { ItemId = 1, Quantity = 213, Price = price, Name = "tire" }));
+            Assert.ThrowsAsync<InvalidOperationException>(() =>itemService.UpdateItemAsync(new Item { ItemId = 1, Quantity = 213, Price = price, Name = "tire" }));
 
             //Assert
-            mockItemsRepository.Verify(m => m.UpdateItem(It.IsAny<Item>()), Times.Never);
+            mockItemsRepository.Verify(m => m.UpdateItemAsync(It.IsAny<Item>()), Times.Never);
 
         }
 
@@ -263,10 +263,10 @@ namespace Lombard.Tests
             var itemService = new ItemService(mockItemsRepository.Object);
 
             //Action & Assert
-            Assert.ThrowsAsync<InvalidOperationException>(() => itemService.UpdateItem(new Item { ItemId = 1, Quantity = 213, Price = 123M, Name = name }));
+            Assert.ThrowsAsync<InvalidOperationException>(() => itemService.UpdateItemAsync(new Item { ItemId = 1, Quantity = 213, Price = 123M, Name = name }));
 
             //Assert
-            mockItemsRepository.Verify(m => m.UpdateItem(It.IsAny<Item>()), Times.Never);
+            mockItemsRepository.Verify(m => m.UpdateItemAsync(It.IsAny<Item>()), Times.Never);
 
         }
 
@@ -279,10 +279,10 @@ namespace Lombard.Tests
             var itemService = new ItemService(mockItemsRepository.Object);
 
             //Action & Assert
-            Assert.ThrowsAsync<InvalidOperationException>(() => itemService.UpdateItem(new Item { ItemId = 1, Quantity = quantity, Price = 123M, Name = "tire" }));
+            Assert.ThrowsAsync<InvalidOperationException>(() => itemService.UpdateItemAsync(new Item { ItemId = 1, Quantity = quantity, Price = 123M, Name = "tire" }));
 
             //Assert
-            mockItemsRepository.Verify(m => m.UpdateItem(It.IsAny<Item>()), Times.Never);
+            mockItemsRepository.Verify(m => m.UpdateItemAsync(It.IsAny<Item>()), Times.Never);
 
         }
     }

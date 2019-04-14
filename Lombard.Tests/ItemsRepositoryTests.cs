@@ -44,7 +44,7 @@ namespace Lombard.Tests
             };
 
             //Action
-            await itemRepo.AddItem(item);
+            await itemRepo.AddItemAsync(item);
 
             //Assert
             dbMock.Verify(m => m.Add(It.IsAny<Item>()), Times.Once);
@@ -52,7 +52,7 @@ namespace Lombard.Tests
         }
 
         [Test]
-        public void GetAllItems_AllItemsInDatabaseAreReturned_CountOfItemsMatchesGivenValue()
+        public async Task GetAllItems_AllItemsInDatabaseAreReturned_CountOfItemsMatchesGivenValue()
         {
             //Arrange
             var databaseSetMock = ItemConfigurator.CreateDbSetMockForItems(_items);
@@ -62,14 +62,14 @@ namespace Lombard.Tests
             var itemRepo = new ItemsRepository(contextMock.Object);
 
             //Action
-            var allItems = itemRepo.GetAll();
+            var allItems = await itemRepo.GetAllAsync();
 
             //Assert
             Assert.AreEqual(3, allItems.Count());
         }
 
         [Test]
-        public void GetAllItems_DatabaseIsEmpty_NoItemsAreReturned()
+        public async Task GetAllItems_DatabaseIsEmpty_NoItemsAreReturned()
         {
             //Arrange
             var dbMock = ItemConfigurator.CreateDbSetMockForItems(new List<Item>());
@@ -79,7 +79,7 @@ namespace Lombard.Tests
             var itemRepo = new ItemsRepository(contextMock.Object);
 
             //Action
-            var allItems = itemRepo.GetAll();
+            var allItems = await itemRepo.GetAllAsync();
 
             //Assert
             Assert.IsEmpty(allItems);
@@ -96,7 +96,7 @@ namespace Lombard.Tests
             var itemRepo = new ItemsRepository(contextMock.Object);
 
             //Action
-            var itemWithGivenId = await itemRepo.GetItemById(1);
+            var itemWithGivenId = await itemRepo.GetItemByIdAsync(1);
 
             //Assert
             Assert.Multiple(() =>
@@ -120,7 +120,7 @@ namespace Lombard.Tests
             var itemRepo = new ItemsRepository(contextMock.Object);
 
             //Action
-            var itemWithGivenId = await itemRepo.GetItemById(-14);
+            var itemWithGivenId = await itemRepo.GetItemByIdAsync(-14);
 
             //Assert
             Assert.IsNull(itemWithGivenId);
@@ -145,7 +145,7 @@ namespace Lombard.Tests
             };
 
             //Action
-            await itemRepo.UpdateItem(ItemToUpdate);
+            await itemRepo.UpdateItemAsync(ItemToUpdate);
 
             //Assert
             databaseSetMock.Verify(m => m.Update(It.IsAny<Item>()), Times.Once);
@@ -171,7 +171,7 @@ namespace Lombard.Tests
             };
 
             //Action && Assert
-            Assert.ThrowsAsync<InvalidOperationException>(() => itemRepo.UpdateItem(ItemToUpdate));
+            Assert.ThrowsAsync<InvalidOperationException>(() => itemRepo.UpdateItemAsync(ItemToUpdate));
 
             //Assert
             databaseSetMock.Verify(m => m.Update(It.IsAny<Item>()), Times.Never);
@@ -189,7 +189,7 @@ namespace Lombard.Tests
             var itemRepo = new ItemsRepository(contextMock.Object);
 
             //Action
-            await itemRepo.DeleteItem(1);
+            await itemRepo.DeleteItemAsync(1);
 
             //Assert
             databaseSetMock.Verify(m => m.Remove(It.IsAny<Item>()), Times.Once);
@@ -207,7 +207,7 @@ namespace Lombard.Tests
             var itemRepo = new ItemsRepository(contextMock.Object);
 
             //Action && Assert
-            Assert.ThrowsAsync<InvalidOperationException>(() => itemRepo.DeleteItem(-14));
+            Assert.ThrowsAsync<InvalidOperationException>(() => itemRepo.DeleteItemAsync(-14));
 
             //Assert
             databaseSetMock.Verify(m => m.Remove(It.IsAny<Item>()), Times.Never);

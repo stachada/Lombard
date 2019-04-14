@@ -6,10 +6,10 @@ namespace Lombard.BL.Services
 {
     public interface IItemService 
     {
-        Task CreateNewItem(Item item);
-        Task DeleteItem(int itemId);
-        Task UpdateItem(Item item);
-        IEnumerable<Item> GetAllItems();
-        Task<Item> GetItemById(int itemId);
+        Task CreateNewItemAsync(Item item);
+        Task DeleteItemAsync(int itemId);
+        Task UpdateItemAsync(Item item);
+        Task<IEnumerable<Item>> GetAllItemsAsync();
+        Task<Item> GetItemByIdAsync(int itemId);
     }
 }
