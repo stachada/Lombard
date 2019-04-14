@@ -67,6 +67,10 @@ namespace LombardAPI.Controllers
             {
                 return BadRequest(ex.Message);
             }
+            catch (Exception)
+            {
+                throw;
+            }
 
             return CreatedAtAction("Get", new { Id = transaction.TransactionId }, transaction);
         }
@@ -87,6 +91,10 @@ namespace LombardAPI.Controllers
             {
                 return BadRequest(ex.Message);
             }
+            catch (Exception)
+            {
+                throw;
+            }
 
             return CreatedAtAction("Get", new { Id = transaction.TransactionId }, transaction);
         }
@@ -102,7 +110,11 @@ namespace LombardAPI.Controllers
             }
             catch(InvalidOperationException ex)
             {
-                BadRequest(ex.Message);
+                return BadRequest(ex.Message);
+            }
+            catch(Exception)
+            {
+                throw;
             }
 
             return NoContent();
@@ -117,7 +129,11 @@ namespace LombardAPI.Controllers
             }
             catch(InvalidOperationException ex)
             {
-                BadRequest(ex.Message);
+                return BadRequest(ex.Message);
+            }
+            catch(Exception)
+            {
+                throw;
             }
 
             return NoContent();
