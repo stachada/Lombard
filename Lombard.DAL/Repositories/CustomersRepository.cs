@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Lombard.BL.Models;
 using Lombard.BL.RepositoriesInterfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Lombard.DAL.Repositories
 {
-    class CustomersRepository : ICustomersRepository
+    public class CustomersRepository : ICustomersRepository
     {
         private readonly DatabaseContext _context;
 
@@ -15,29 +17,51 @@ namespace Lombard.DAL.Repositories
             _context = context;
         }
 
-        public void AddCustomer(Customer customer)
+        public async Task AddCustomerAsync(Customer customer)
         {
-            throw new NotImplementedException();
+            _context.Customers.Add(customer);
+            await _context.SaveChangesAsync();
+        }
+      
+        public async Task DeleteCustomerAsync(int customerId)
+        {
+            var customerToDelete = await GetCustomerByIdAsync(customerId);
+
+            if(customerToDelete != null)
+            {
+                _context.Customers.Remove(customerToDelete);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new InvalidOperationException("Customer does not exist");
+            }
         }
 
-        public void DeleteCustomer(int customerId)
+        public async Task<IEnumerable<Customer>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Customers.ToListAsync();
+        }
+      
+        public async Task UpdateCustomerAsync(Customer customer)
+        {
+            var customerToUpdate = await GetCustomerByIdAsync(customer.CustomerId);
+
+            if (customerToUpdate != null)
+            {
+                _context.Customers.Update(customer);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new InvalidOperationException("Customer does not exist");
+            }
+
         }
 
-        public IEnumerable<Customer> GetAll()
+        public async Task<Customer> GetCustomerByIdAsync(int customerId)
         {
-            throw new NotImplementedException();
-        }
-
-        public Customer GetCustomerById(int customerId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateCustomer(Customer customer)
-        {
-            throw new NotImplementedException();
+            return await _context.Customers.FirstOrDefaultAsync(c => c.CustomerId == customerId);
         }
     }
 }
