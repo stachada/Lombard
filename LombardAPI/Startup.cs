@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Lombard.BL.RepositoriesInterfaces;
 using Lombard.BL.Services;
+using Lombard.DAL;
+using Lombard.DAL.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -30,7 +32,10 @@ namespace LombardAPI
             services.AddAutoMapper();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddEntityFrameworkSqlite().AddDbContext<DatabaseContext>();
 
+            services.AddScoped<IItemsRepository, ItemsRepository>();
+            services.AddScoped<ITransactionsRepository, TransactionsRepository>();
             services.AddScoped<ITransactionsService, TransactionsService>();
 
             services.AddScoped<IItemService, ItemService>();

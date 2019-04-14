@@ -9,6 +9,11 @@ namespace Lombard.DAL
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<Transaction> Transactions { get; set; }
 
+        public DatabaseContext()
+        {
+            //Database.EnsureCreated();
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite("Data Source=Lombard.db");

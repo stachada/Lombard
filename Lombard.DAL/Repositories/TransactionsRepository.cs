@@ -1,4 +1,5 @@
-﻿using Lombard.BL.Models;
+﻿using Lombard.BL.Helpers;
+using Lombard.BL.Models;
 using Lombard.BL.RepositoriesInterfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -17,9 +18,9 @@ namespace Lombard.DAL.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Transaction>> GetAllAsync()
+        public async Task<PagedList<Transaction>> GetTransactions(int pageNumber, int pageSize)
         {
-            return await _context.Transactions.ToListAsync();
+            return await PagedList<Transaction>.CreateAsync(_context.Transactions, pageNumber, pageSize);
         }
 
         public async Task<Transaction> GetByIdAsync(int id)
@@ -63,6 +64,24 @@ namespace Lombard.DAL.Repositories
             {
                 throw new InvalidOperationException("Transaction not found");
             }
+        }
+
+        public async Task<decimal> GetTurnover(DateTime start, DateTime end)
+        {
+            var turnover = await _context.Transactions
+                .Where(t => !t.IsPurchase && t.TransactionDate >= start && t.TransactionDate <= end)
+                .SumAsync(t => t.GetTransactionAmount());
+
+            return turnover;
+        }
+
+        public async Task<decimal> GetProfit(DateTime start, DateTime end)
+        {
+            var profit = await _context.Transactions
+                .Where(t => t.TransactionDate >= start && t.TransactionDate <= end)
+                .SumAsync(t => t.GetTransactionAmount());
+
+            return profit;
         }
     }
 }
