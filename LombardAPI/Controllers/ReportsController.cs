@@ -6,7 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LombardAPI.Controllers
 {
-    public class ItemController : Controller
+    public class ReportsController : Controller
     {
+        public IActionResult Index()
+        {
+            return View();
+        }
     }
 }
