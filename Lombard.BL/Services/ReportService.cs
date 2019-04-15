@@ -18,9 +18,9 @@ namespace Lombard.BL.Services
             _itemsRepos = itemsRepos;
         }
 
-        public async Task<IEnumerable<Item>> GetAllAsync()
+        public async Task<IEnumerable<Item>> GetAllAsync(int pageNumber, int pageSize)
         {
-            return await _itemsRepos.GetAllAsync();
+            return await _itemsRepos.GetAllAsync(pageNumber, pageSize);
         }
 
         public async Task<IEnumerable<Item>> GetItemsWithQuantityLowerThanAsync(float quanity)

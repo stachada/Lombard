@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
+using Lombard.BL.Helpers;
 using Lombard.BL.Models;
 using Lombard.BL.RepositoriesInterfaces;
 
@@ -33,9 +33,9 @@ namespace Lombard.BL.Services
             await _itemsRepository.DeleteItemAsync(itemId);
         }
 
-        public async Task<IEnumerable<Item>> GetAllItemsAsync()
+        public async Task<PagedList<Item>> GetAllItemsAsync(int pageNumber, int pageSize)
         {
-            return await _itemsRepository.GetAllAsync();
+            return await _itemsRepository.GetAllAsync(pageNumber, pageSize);
         }
 
         public async Task<Item> GetItemByIdAsync(int itemId)

@@ -57,20 +57,6 @@ namespace Lombard.Tests
         }
 
         [Test]
-        public async Task GetItems_AllItemsAreReturned_ShouldReturnCorrectActionResult()
-        {
-            var mockItemService = new Mock<IItemService>();
-
-            var mockMapper = new Mock<IMapper>();
-
-            var controller = new ItemsController(mockItemService.Object,mockMapper.Object);
-
-            var result = await controller.GetAllItems();
-
-            Assert.IsInstanceOf<OkObjectResult>(result.Result);
-        }
-
-        [Test]
         public async Task CreateItem_GivenValidData_ShouldReturnCorrectActionResult()
         {
             var itemDto = new ItemDto { ItemId = 1, Name = "roll", Price = 123.5M, ProductCategory = "Different", Quantity = 152.6f };

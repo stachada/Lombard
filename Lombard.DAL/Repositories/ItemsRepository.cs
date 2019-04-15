@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Lombard.BL.Helpers;
 using Lombard.BL.Models;
 using Lombard.BL.RepositoriesInterfaces;
 using LombardAPI.Dtos;
@@ -58,9 +59,9 @@ namespace Lombard.DAL.Repositories
             }
         }
 
-        public async Task<IEnumerable<Item>> GetAllAsync()
+        public async Task<PagedList<Item>> GetAllAsync(int pageNumber, int pageSize)
         {
-            return await _context.Items.ToListAsync();
+            return await PagedList<Item>.CreateAsync(_context.Items.AsQueryable(),pageNumber,pageSize);
         }
 
         public async Task<Item> GetItemByIdAsync(int itemId)

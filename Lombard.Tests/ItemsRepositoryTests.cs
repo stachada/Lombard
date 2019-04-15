@@ -62,7 +62,7 @@ namespace Lombard.Tests
             var itemRepo = new ItemsRepository(contextMock.Object);
 
             //Action
-            var allItems = await itemRepo.GetAllAsync();
+            var allItems = await itemRepo.GetAllAsync(1,3);
 
             //Assert
             Assert.AreEqual(3, allItems.Count());
@@ -79,7 +79,7 @@ namespace Lombard.Tests
             var itemRepo = new ItemsRepository(contextMock.Object);
 
             //Action
-            var allItems = await itemRepo.GetAllAsync();
+            var allItems = await itemRepo.GetAllAsync(1,0);
 
             //Assert
             Assert.IsEmpty(allItems);
