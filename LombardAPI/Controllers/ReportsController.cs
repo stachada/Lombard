@@ -27,7 +27,19 @@ namespace LombardAPI.Controllers
         [HttpGet("profit")]
         public async Task<ActionResult> Get([FromQuery]PeriodQuery query)
         {
-            var profit = await _reportService.GetProfit(query.StartDate, query.EndDate);
+            decimal profit;
+            try
+            {
+                profit = await _reportService.GetProfit(query.StartDate, query.EndDate);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
 
             return Ok(profit);
         }
