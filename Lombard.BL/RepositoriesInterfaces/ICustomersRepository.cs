@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Lombard.BL.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Lombard.BL.RepositoriesInterfaces
