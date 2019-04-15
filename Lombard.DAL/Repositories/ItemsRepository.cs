@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Lombard.BL.Helpers;
 using Lombard.BL.Models;
 using Lombard.BL.RepositoriesInterfaces;
+using LombardAPI.Dtos;
 using Microsoft.EntityFrameworkCore;
 
 namespace Lombard.DAL.Repositories
@@ -68,9 +69,9 @@ namespace Lombard.DAL.Repositories
             return await _context.Items.AsNoTracking().FirstOrDefaultAsync(i => i.ItemId == itemId);
         }
 
-        public async Task<IEnumerable<Item>> GetQuantityInCategoriesAsync()
+        public async Task<IEnumerable<CategoryDto>> GetQuantityInCategoriesAsync()
         {
-            return await _context.Items.GroupBy(i => i.ProductCategory).Select(x => new Item { ProductCategory = x.Key, Quantity = x.Sum(y => y.Quantity) }).ToListAsync();
+            return await _context.Items.GroupBy(i => i.ProductCategory).Select(x => new CategoryDto { ProductCategory = x.Key.ToString(), Quantity = x.Sum(y => y.Quantity) }).ToListAsync();
         }
 
         public async Task<IEnumerable<Item>> GetItemsWithQuantityLowerThanAsync(float quanity)

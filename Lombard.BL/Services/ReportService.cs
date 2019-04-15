@@ -1,5 +1,6 @@
 ﻿using Lombard.BL.Models;
 using Lombard.BL.RepositoriesInterfaces;
+using LombardAPI.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -33,7 +34,7 @@ namespace Lombard.BL.Services
             return await _transactionsRepo.GetProfit(start, end);
         }
 
-        public async Task<IEnumerable<Item>> GetQuantityInCategoriesAsync()
+        public async Task<IEnumerable<CategoryDto>> GetQuantityInCategoriesAsync()
         {
             return await _itemsRepos.GetQuantityInCategoriesAsync();
         }
