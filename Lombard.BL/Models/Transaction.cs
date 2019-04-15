@@ -10,18 +10,16 @@ namespace Lombard.BL.Models
         {
             if (price <= 0)
                 throw new InvalidOperationException("price");
-
-            if (item == null)
-                throw new InvalidOperationException("item");
-
-            Transaction transaction = new Transaction();
-            transaction.TransactionId = id;
-            transaction.Item = item;
-            transaction.ItemId = item?.ItemId;
-            transaction.Customer = customer;
-            transaction.CustomerId = customer?.CustomerId;
-            transaction.Quantity = quantity;
-            transaction.Price = price;
+            Transaction transaction = new Transaction
+            {
+                TransactionId = id,
+                Item = item ?? throw new InvalidOperationException("item"),
+                ItemId = item?.ItemId,
+                Customer = customer,
+                CustomerId = customer?.CustomerId,
+                Quantity = quantity,
+                Price = price
+            };
 
             return transaction;
         }
