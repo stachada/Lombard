@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Lombard.BL.Services;
+using LombardAPI.Dtos;
 using LombardAPI.Queries;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -43,20 +44,32 @@ namespace LombardAPI.Controllers
             return Ok(profit);
         }
 
-        [HttpGet("allitems")]
-        public async Task<ActionResult> Get()
+        [HttpGet("turnover")]
+        public async Task<ActionResult> GetTotalTurnver([FromQuery] PeriodQuery query)
         {
-            var items = await _reportService.GetAllAsync();
-
-            return Ok(items);
+            try
+            {
+                var turnover = await _reportService.GetTurnover(query.StartDate, query.EndDate);
+                return Ok(turnover);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        [HttpGet("itemstoreorder")]
-        public async Task<ActionResult>Get([FromQuery]float minQuantity)
+        [HttpGet("categories")]
+        public async Task<ActionResult> GetItemsGroupedByCategories()
         {
-            var list = await _reportService.GetItemsWithQuantityLowerThanAsync(minQuantity);
-
-            return Ok(list);
+            try
+            {
+                var categories = await _reportService.GetQuantityInCategoriesAsync();
+                return Ok(categories);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }
