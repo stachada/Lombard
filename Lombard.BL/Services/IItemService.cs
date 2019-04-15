@@ -1,11 +1,10 @@
 ﻿using Lombard.BL.Models;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Lombard.BL.Services
 {
-    public interface IItemService 
+    public interface IItemService
     {
         Task<int> CreateNewItemAsync(Item item);
         Task DeleteItemAsync(int itemId);

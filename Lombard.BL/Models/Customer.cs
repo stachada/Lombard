@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Lombard.BL.Models
 {
@@ -12,12 +10,12 @@ namespace Lombard.BL.Models
 
         public void ChangeName(string newName)
         {
-            Name = newName;          
+            Name = newName;
         }
-        
+
         public bool IsAdult()
         {
             return BirthDate.AddYears(18) < DateTime.Now ? true : false;
-        }     
+        }
     }
 }

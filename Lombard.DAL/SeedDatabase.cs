@@ -1,7 +1,6 @@
 ﻿using Lombard.BL.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Lombard.DAL
 {
@@ -41,7 +40,8 @@ namespace Lombard.DAL
                 ItemId = 1,
                 Price = 10.00M,
                 Name = "Opona",
-                Quantity = 5
+                Quantity = 5,
+                ProductCategory = BL.Helpers.ProductCategory.Automotive
             };
 
             var item2 = new Item()
@@ -49,7 +49,8 @@ namespace Lombard.DAL
                 ItemId = 2,
                 Price = 15.55M,
                 Name = "Udko z psa",
-                Quantity = 10
+                Quantity = 10,
+                ProductCategory = BL.Helpers.ProductCategory.Food
             };
 
             var item3 = new Item()
@@ -57,7 +58,8 @@ namespace Lombard.DAL
                 ItemId = 3,
                 Price = 5.35M,
                 Name = "Paczka ryżu",
-                Quantity = 7
+                Quantity = 7,
+                ProductCategory = BL.Helpers.ProductCategory.Food
             };
 
             _context.Items.Add(item1);

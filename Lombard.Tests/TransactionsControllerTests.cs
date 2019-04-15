@@ -11,12 +11,7 @@ using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using System.Linq;
-using Microsoft.AspNetCore.Http;
-using System.Net;
-using Microsoft.AspNetCore.Http.Internal;
 
 namespace Lombard.Tests
 {

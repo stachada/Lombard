@@ -10,6 +10,7 @@ namespace Lombard.BL.Services
     public class CustomerService : ICustomerService
     {
         private readonly ICustomersRepository _customerRepository;
+        
 
         public CustomerService(ICustomersRepository customerRepository)
         {
