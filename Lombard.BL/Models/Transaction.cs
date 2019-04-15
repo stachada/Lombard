@@ -64,6 +64,7 @@ namespace Lombard.BL.Models
         public void SetTransactionDate(DateTime date)
         {
             TransactionDate = date;
+            //int x = 5;
         }
     }
 }

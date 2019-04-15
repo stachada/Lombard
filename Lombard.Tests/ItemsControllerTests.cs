@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Lombard.BL.Models;
-using Lombard.BL.RepositoriesInterfaces;
 using Lombard.BL.Services;
 using LombardAPI.Controllers;
 using LombardAPI.Dtos;
@@ -8,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Lombard.Tests

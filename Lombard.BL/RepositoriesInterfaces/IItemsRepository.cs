@@ -1,7 +1,7 @@
-﻿using Lombard.BL.Models;
-using LombardAPI.Dtos;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Lombard.BL.Models;
+using LombardAPI.Dtos;
 
 namespace Lombard.BL.RepositoriesInterfaces
 {

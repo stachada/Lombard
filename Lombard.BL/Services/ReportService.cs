@@ -3,7 +3,6 @@ using Lombard.BL.RepositoriesInterfaces;
 using LombardAPI.Dtos;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Lombard.BL.Services

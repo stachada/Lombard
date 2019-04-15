@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Lombard.BL.Models;
 using NUnit.Framework;
-using Moq;
 
 namespace Lombard.Tests
 {
