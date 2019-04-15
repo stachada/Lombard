@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Lombard.BL.Helpers;
 using Lombard.BL.Models;
 using Lombard.BL.RepositoriesInterfaces;
 using LombardAPI.Dtos;

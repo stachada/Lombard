@@ -1,6 +1,4 @@
-﻿using Lombard.BL.Helpers;
-
-namespace LombardAPI.Dtos
+﻿namespace LombardAPI.Dtos
 {
     public class ItemDto
     {
