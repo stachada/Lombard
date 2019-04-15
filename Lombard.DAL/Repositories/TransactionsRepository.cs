@@ -19,7 +19,7 @@ namespace Lombard.DAL.Repositories
 
         public async Task<PagedList<Transaction>> GetTransactions(int pageNumber, int pageSize)
         {
-            return await PagedList<Transaction>.CreateAsync(_context.Transactions.OrderBy(t => t.TransactionDate), pageNumber, pageSize);
+            return await PagedList<Transaction>.CreateAsync(_context.Transactions.OrderBy(t => t.TransactionId), pageNumber, pageSize);
         }
 
         public async Task<Transaction> GetByIdAsync(int id)
