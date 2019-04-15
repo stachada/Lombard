@@ -10,7 +10,7 @@ namespace Lombard.BL.Services
     {
         Task<decimal> GetTurnover(DateTime start, DateTime end);
         Task<decimal> GetProfit(DateTime start, DateTime end);
-        Task<IEnumerable<Item>> GetAllAsync();
+        Task<IEnumerable<Item>> GetAllAsync(int pageNumber, int pageSize);
         Task<IEnumerable<CategoryDto>> GetQuantityInCategoriesAsync();
         Task<IEnumerable<Item>> GetItemsWithQuantityLowerThanAsync(float quanity);
     }

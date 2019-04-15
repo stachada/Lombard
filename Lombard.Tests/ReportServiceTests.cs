@@ -51,9 +51,9 @@ namespace Lombard.Tests
 
             var service = new ReportService(mockTransactionsRepo.Object, mockItemsRepo.Object);
 
-            var result = await service.GetAllAsync();
+            var result = await service.GetAllAsync(1,2);
 
-            mockItemsRepo.Verify(m => m.GetAllAsync(), Times.Once);
+            mockItemsRepo.Verify(m => m.GetAllAsync(1,2), Times.Once);
         }
 
         [Test]

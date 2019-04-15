@@ -1,4 +1,5 @@
-﻿using Lombard.BL.Models;
+﻿using Lombard.BL.Helpers;
+using Lombard.BL.Models;
 using Lombard.BL.RepositoriesInterfaces;
 using Lombard.BL.Services;
 using Lombard.Tests.TestHelpers;
@@ -120,15 +121,15 @@ namespace Lombard.Tests
         {
             //Arrange
             var mockItemsRepository = new Mock<IItemsRepository>();
-            mockItemsRepository.Setup(m => m.GetAllAsync()).ReturnsAsync(ItemConfigurator.GenerateItems());
+            mockItemsRepository.Setup(m => m.GetAllAsync(It.IsAny<int>(),It.IsAny<int>())).ReturnsAsync(ItemConfigurator.GenerateItems());
 
             var itemService = new ItemService(mockItemsRepository.Object);
 
             //Action
-            var allItems = await itemService.GetAllItemsAsync();
+            var allItems = await itemService.GetAllItemsAsync(1,2);
 
             //Assert
-            mockItemsRepository.Verify(m => m.GetAllAsync(), Times.Once);
+            mockItemsRepository.Verify(m => m.GetAllAsync(1,2), Times.Once);
 
             Assert.AreEqual(3, allItems.Count());
         }
@@ -138,15 +139,15 @@ namespace Lombard.Tests
         {
             //Arrange
             var mockItemsRepository = new Mock<IItemsRepository>();
-            mockItemsRepository.Setup(m => m.GetAllAsync()).ReturnsAsync(new List<Item>());
+            mockItemsRepository.Setup(m => m.GetAllAsync(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(new PagedList<Item>(new List<Item>(),0,0,0));
 
             var itemService = new ItemService(mockItemsRepository.Object);
 
             //Action
-            var allItems = await itemService.GetAllItemsAsync();
+            var allItems = await itemService.GetAllItemsAsync(1,2);
 
             //Assert
-            mockItemsRepository.Verify(m => m.GetAllAsync(), Times.Once);
+            mockItemsRepository.Verify(m => m.GetAllAsync(1,2), Times.Once);
 
             Assert.IsEmpty(allItems);
         }
