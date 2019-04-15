@@ -48,6 +48,12 @@ namespace LombardAPI
                 
             }
 
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                );
+
             app.UseMvc();
         }
     }
