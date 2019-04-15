@@ -1,8 +1,6 @@
-﻿using System;
+﻿using Lombard.BL.Models;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using Lombard.BL.Models;
 
 namespace Lombard.BL.RepositoriesInterfaces
 {
