@@ -98,7 +98,7 @@ namespace Lombard.Tests
 
             await service.BuyAsync(1, 1, 1, 10.00M);
 
-            mockItemsRepository.Verify(m => m.UpdateItemAsync(It.IsAny<Item>()), Times.Once);
+            mockItemsRepository.Verify(m => m.UpdateItemAsync(It.IsAny<Item>()), Times.Exactly(2));
         }
 
         [Test]
@@ -122,14 +122,20 @@ namespace Lombard.Tests
         public async Task SellAsync_GivenItemId_ShouldGetItemFromItemsRepository()
         {
             var mockItemsRepository = new Mock<IItemsRepository>();
-            mockItemsRepository.Setup(m => m.GetItemByIdAsync(It.IsAny<int>())).ReturnsAsync(new Item());
+            mockItemsRepository.Setup(m => m.GetItemByIdAsync(It.IsAny<int>())).ReturnsAsync(new Item()
+            {
+                ItemId = 1,
+                Price = 10.00M,
+                Name = "Opona",
+                Quantity = 5
+            });
             var mockCustomerRepository = new Mock<ICustomersRepository>();
             mockCustomerRepository.Setup(m => m.GetCustomerByIdAsync(It.IsAny<int>())).ReturnsAsync(new Customer());
             var mockTransactionsRepository = new Mock<ITransactionsRepository>();
 
             var service = new TransactionsService(mockTransactionsRepository.Object, mockItemsRepository.Object, mockCustomerRepository.Object);
 
-            await service.SellAsync(1, 1, 10, 10.00M);
+            await service.SellAsync(1, 1, 1, 10.00M);
 
             mockItemsRepository.Verify(m => m.GetItemByIdAsync(1), Times.Once);
         }
