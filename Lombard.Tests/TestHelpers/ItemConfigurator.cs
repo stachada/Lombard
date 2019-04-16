@@ -1,4 +1,5 @@
-﻿using Lombard.BL.Models;
+﻿using Lombard.BL.Helpers;
+using Lombard.BL.Models;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ namespace Lombard.Tests.TestHelpers
 {
     public class ItemConfigurator
     {
-        public static IEnumerable<Item> GenerateItems()
+        public static PagedList<Item> GenerateItems()
         {
             var item1 = new Item()
             {
@@ -37,14 +38,14 @@ namespace Lombard.Tests.TestHelpers
                 ProductCategory = BL.Helpers.ProductCategory.Food
             };
 
-            var items = new List<Item>()
+            var items = new List<Item>
             {
                 item1,
                 item2,
                 item3
             };
 
-            return items;
+            return new PagedList<Item>(items,items.Count,1,3);
         }
 
         public static Mock<DbSet<Item>> CreateDbSetMockForItems(IEnumerable<Item> items)

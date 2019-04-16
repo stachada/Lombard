@@ -6,6 +6,8 @@ using Lombard.BL.Helpers;
 using Lombard.BL.Models;
 using Lombard.BL.Services;
 using LombardAPI.Dtos;
+using LombardAPI.Helpers;
+using LombardAPI.Queries;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LombardAPI.Controllers
@@ -75,11 +77,18 @@ namespace LombardAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ItemDto>>> GetAllItems()
+        public async Task<ActionResult> GetAllItems([FromQuery]ItemQuery query)
         {
-            var items = await _itemsService.GetAllItemsAsync();
+            var items = await _itemsService.GetAllItemsAsync(query.PageNumber,query.PageSize);
 
-            return Ok(_mapper.Map<IEnumerable<ItemDto>>(items));
+            if (items.Count == 0)
+                return NotFound();
+
+            var itemsToReturn = _mapper.Map<IEnumerable<ItemDto>>(items);
+
+            Response.AddPagination(items.CurrentPage, items.PageSize, items.TotalCount, items.TotalPages);
+
+            return Ok(itemsToReturn);
         }
 
         [HttpGet("{id}")]
