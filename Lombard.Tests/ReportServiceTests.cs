@@ -23,7 +23,7 @@ namespace Lombard.Tests
 
             var result = await service.GetTurnover(start, end);
 
-            mockTransactionsRepo.Verify(m => m.GetTurnover(start, end), Times.Once);
+            mockTransactionsRepo.Verify(m => m.GetTurnoverAsync(start, end), Times.Once);
         }
 
         [Test]
@@ -39,7 +39,7 @@ namespace Lombard.Tests
 
             var result = await service.GetProfit(start, end);
 
-            mockTransactionsRepo.Verify(m => m.GetProfit(start, end), Times.Once);
+            mockTransactionsRepo.Verify(m => m.GetProfitAsync(start, end), Times.Once);
         }
 
         [Test]

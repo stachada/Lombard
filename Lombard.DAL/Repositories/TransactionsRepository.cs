@@ -22,6 +22,16 @@ namespace Lombard.DAL.Repositories
             return await PagedList<Transaction>.CreateAsync(_context.Transactions.OrderBy(t => t.TransactionId), pageNumber, pageSize);
         }
 
+        public async Task<PagedList<Transaction>> GetTransactionsByCategory(ProductCategory category, int pageNumber, int pageSize)
+        {
+            return await PagedList<Transaction>.CreateAsync(_context.Transactions.Where(t => t.Item.ProductCategory == category), pageNumber, pageSize);
+        }
+
+        public async Task<PagedList<Transaction>> GetTransactionsToDate(DateTime date, int pageNumber, int pageSize)
+        {
+            return await PagedList<Transaction>.CreateAsync(_context.Transactions.Where(t => t.TransactionDate <= date), pageNumber, pageSize);
+        }
+
         public async Task<Transaction> GetByIdAsync(int id)
         {
             return await _context.Transactions.FirstOrDefaultAsync(t => t.TransactionId == id);
@@ -66,10 +76,8 @@ namespace Lombard.DAL.Repositories
             }
         }
 
-        public async Task<decimal> GetTurnover(DateTime start, DateTime end)
+        public async Task<decimal> GetTurnoverAsync(DateTime start, DateTime end)
         {
-            if (start > end) throw new InvalidOperationException("Start date must be before End date");
-
             var turnover = await _context.Transactions
                 .Where(t => !t.IsPurchase && t.TransactionDate >= start && t.TransactionDate <= end)
                 .SumAsync(t => t.GetTransactionAmount());
@@ -77,15 +85,25 @@ namespace Lombard.DAL.Repositories
             return turnover;
         }
 
-        public async Task<decimal> GetProfit(DateTime start, DateTime end)
+        public async Task<decimal> GetProfitAsync(DateTime start, DateTime end)
         {
-            if (start > end) throw new InvalidOperationException("Start date must be before End date");
-
             var profit = await _context.Transactions
                 .Where(t => t.TransactionDate >= start && t.TransactionDate <= end)
                 .SumAsync(t => t.GetTransactionAmount());
 
             return profit;
+        }
+
+        public async Task<decimal> GetAveragePriceForItemAsync(int itemId)
+        {
+            var totalQuantity = await _context.Transactions
+                .Where(t => t.Item.ItemId == itemId && t.IsPurchase)
+                .SumAsync(t => t.Quantity);
+            var totalAmountSpent = await _context.Transactions
+                .Where(t => t.Item.ItemId == itemId && t.IsPurchase)
+                .SumAsync(t => -t.GetTransactionAmount());
+
+            return totalAmountSpent / (decimal)totalQuantity;
         }
     }
 }

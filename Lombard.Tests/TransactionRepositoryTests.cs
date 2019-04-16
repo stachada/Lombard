@@ -149,7 +149,7 @@ namespace Lombard.Tests
 
             var repository = new TransactionsRepository(contextMock.Object);
 
-            var result = await repository.GetTurnover(new DateTime(2019, 4, 1), new DateTime(2019, 4, 30));
+            var result = await repository.GetTurnoverAsync(new DateTime(2019, 4, 1), new DateTime(2019, 4, 30));
 
             Assert.That(result, Is.EqualTo(39.40M));
         }
@@ -164,22 +164,9 @@ namespace Lombard.Tests
 
             var repository = new TransactionsRepository(contextMock.Object);
 
-            var result = await repository.GetTurnover(new DateTime(2019, 3, 1), new DateTime(2019, 3, 31));
+            var result = await repository.GetTurnoverAsync(new DateTime(2019, 3, 1), new DateTime(2019, 3, 31));
 
             Assert.That(result, Is.EqualTo(11.00M));
-        }
-
-        [Test]
-        public void GetTurnover_StartLaterThanEnd_ShouldThrowException()
-        {
-            Mock<DbSet<Transaction>> dbSetMock = TransactionTestHelpers.CreateDbSetMockForTransaction(_transactions);
-
-            var contextMock = new Mock<DatabaseContext>();
-            contextMock.Setup(m => m.Transactions).Returns(dbSetMock.Object);
-
-            var repository = new TransactionsRepository(contextMock.Object);
-
-            Assert.ThrowsAsync<InvalidOperationException>(() => repository.GetTurnover(new DateTime(2019, 5, 1), new DateTime(2019, 3, 31)));
         }
 
         [Test]
@@ -192,7 +179,7 @@ namespace Lombard.Tests
 
             var repository = new TransactionsRepository(contextMock.Object);
 
-            var result = await repository.GetProfit(new DateTime(2019, 4, 1), new DateTime(2019, 4, 30));
+            var result = await repository.GetProfitAsync(new DateTime(2019, 4, 1), new DateTime(2019, 4, 30));
 
             Assert.That(result, Is.EqualTo(-10.60M));
         }
@@ -207,22 +194,9 @@ namespace Lombard.Tests
 
             var repository = new TransactionsRepository(contextMock.Object);
 
-            var result = await repository.GetProfit(new DateTime(2019, 3, 1), new DateTime(2019, 3, 31));
+            var result = await repository.GetProfitAsync(new DateTime(2019, 3, 1), new DateTime(2019, 3, 31));
 
             Assert.That(result, Is.EqualTo(1.00M));
-        }
-
-        [Test]
-        public void GetProfit_StartLaterThanEnd_ShouldThrowException()
-        {
-            Mock<DbSet<Transaction>> dbSetMock = TransactionTestHelpers.CreateDbSetMockForTransaction(_transactions);
-
-            var contextMock = new Mock<DatabaseContext>();
-            contextMock.Setup(m => m.Transactions).Returns(dbSetMock.Object);
-
-            var repository = new TransactionsRepository(contextMock.Object);
-
-            Assert.ThrowsAsync<InvalidOperationException>(() => repository.GetProfit(new DateTime(2019, 5, 1), new DateTime(2019, 3, 31)));
         }
     }
 }

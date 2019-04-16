@@ -39,11 +39,13 @@ namespace Lombard.BL.Models
         [Required]
         public decimal Price { get; private set; }
         
+        [NotMapped]
         public Item Item { get; private set; }
 
         [NotMapped]
         public bool IsPurchase => Quantity >= 0;
 
+        [NotMapped]
         public Customer Customer { get; private set; }
         public int? CustomerId { get; private set; }
         public int? ItemId { get; private set; }

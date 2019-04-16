@@ -45,6 +45,36 @@ namespace LombardAPI.Controllers
             return Ok(transactionsToReturn);
         }
 
+        [HttpGet("category")]
+        public async Task<ActionResult> GetTransactions([FromQuery]TransactionByProductCategoryQuery query)
+        {
+            var transactions = await _transactionsRepository.GetTransactionsByCategory(query.Category, query.PageNumber, query.PageSize);
+
+            if (transactions.Count == 0)
+                return NotFound();
+
+            var transactionsToReturn = _mapper.Map<IEnumerable<TransactionDto>>(transactions);
+
+            Response.AddPagination(transactions.CurrentPage, transactions.PageSize, transactions.TotalCount, transactions.TotalPages);
+
+            return Ok(transactionsToReturn);
+        }
+
+        [HttpGet("uptodate")]
+        public async Task<ActionResult> GetTransactions([FromQuery]TransactionToDateQuery query)
+        {
+            var transactions = await _transactionsRepository.GetTransactionsToDate(query.Date, query.PageNumber, query.PageSize);
+
+            if (transactions.Count == 0)
+                return NotFound();
+
+            var transactionsToReturn = _mapper.Map<IEnumerable<TransactionDto>>(transactions);
+
+            Response.AddPagination(transactions.CurrentPage, transactions.PageSize, transactions.TotalCount, transactions.TotalPages);
+
+            return Ok(transactionsToReturn);
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult> Get(int id)
         {

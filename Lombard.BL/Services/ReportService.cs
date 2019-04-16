@@ -30,7 +30,7 @@ namespace Lombard.BL.Services
 
         public async Task<decimal> GetProfit(DateTime start, DateTime end)
         {
-            return await _transactionsRepo.GetProfit(start, end);
+            return await _transactionsRepo.GetProfitAsync(start, end);
         }
 
         public async Task<IEnumerable<CategoryDto>> GetQuantityInCategoriesAsync()
@@ -40,7 +40,7 @@ namespace Lombard.BL.Services
 
         public async Task<decimal> GetTurnover(DateTime start, DateTime end)
         {
-            return await _transactionsRepo.GetTurnover(start, end);
+            return await _transactionsRepo.GetTurnoverAsync(start, end);
         }
     }
 }

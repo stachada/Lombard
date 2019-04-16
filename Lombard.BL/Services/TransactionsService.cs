@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Lombard.BL.Helpers;
 using Lombard.BL.Models;
 using Lombard.BL.RepositoriesInterfaces;
 
@@ -18,6 +19,21 @@ namespace Lombard.BL.Services
             _customersRepo = customersRepo;
         }
 
+        public async Task<PagedList<Transaction>> GetTransactions(int pageNumber, int pageSize)
+        {
+            return await _transactionsRepo.GetTransactions(pageNumber, pageSize);
+        }
+
+        public async Task<PagedList<Transaction>> GetTransactionsByCategory(ProductCategory category, int pageNumber, int pageSize)
+        {
+            return await _transactionsRepo.GetTransactionsByCategory(category, pageNumber, pageSize);
+        }
+
+        public async Task<PagedList<Transaction>> GetTransactionsToDate(DateTime date, int pageNumber, int pageSize)
+        {
+            return await _transactionsRepo.GetTransactionsToDate(date, pageSize, pageSize);
+        }
+
         public async Task<Transaction> BuyAsync(int itemId, int customerId, float quantity, decimal price)
         {
             var item = await _itemsRepo.GetItemByIdAsync(itemId);
@@ -34,6 +50,9 @@ namespace Lombard.BL.Services
             await _itemsRepo.UpdateItemAsync(item);
             var transaction = Transaction.CreateTransaction(item, customer, quantity, price);
             await _transactionsRepo.AddAsync(transaction);
+            var averagePrice = await _transactionsRepo.GetAveragePriceForItemAsync(item.ItemId);
+            item.Price = averagePrice;
+            await _itemsRepo.UpdateItemAsync(item);
             return transaction;
         }
 
@@ -50,6 +69,9 @@ namespace Lombard.BL.Services
             if (price <= 0) throw new InvalidOperationException("Price must be positive");
 
             item.DecreaseItemQuantityByGivenValue(quantity);
+
+            if (item.Quantity < 0) throw new InvalidOperationException("There is no enough items in stock");
+
             await _itemsRepo.UpdateItemAsync(item);
             var transaction = Transaction.CreateTransaction(item, customer, -quantity, price);
             await _transactionsRepo.AddAsync(transaction);
@@ -66,6 +88,20 @@ namespace Lombard.BL.Services
         public async Task DeleteTransactionAsync(int id)
         {
             await _transactionsRepo.DeleteAsync(id);
+        }
+
+        public async Task<decimal> GetTurnoverAsync(DateTime start, DateTime end)
+        {
+            if (start > end) throw new InvalidOperationException("Start date must be before End date");
+
+            return await _transactionsRepo.GetTurnoverAsync(start, end);
+        }
+
+        public async Task<decimal> GetProfitAsync(DateTime start, DateTime end)
+        {
+            if (start > end) throw new InvalidOperationException("Start date must be before End date");
+
+            return await _transactionsRepo.GetProfitAsync(start, end);
         }
     }
 }
